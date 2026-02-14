@@ -488,8 +488,8 @@ const TM_COURSE = (function () {
                 </div>
 
                 <!-- Visual Course Map -->
-                <div class="course-map-container" style="margin-top: 1.5rem;">
-                    <h3 style="margin-top:0; font-size: 1rem; color: var(--text-muted);">Learning Path</h3>
+                <div class="course-map-container" style="margin-top: 0.5rem;">
+                    <h3 style="margin-top:0; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">Learning Path</h3>
                     <div class="map-path">
                         ${course.lessons.map(l => {
             const lessonProgress = getLessonProgress(l.id);
@@ -508,19 +508,19 @@ const TM_COURSE = (function () {
                     </div>
                 </div>
 
-                <div class="progress-overview" style="margin-top: 1.5rem;">
+                <div class="progress-overview" style="margin-top: 0.5rem;">
                      <div class="progress-card">
                         <h3>📊 Overall Progress</h3>
-                        <div class="progress-bar" style="margin: 1rem 0;">
+                        <div class="progress-bar" style="margin: 0.5rem 0;">
                             <div class="progress-fill" style="width: ${calculateProgress()}%"></div>
                         </div>
                         <p>${progress.completedSubLessons.length}/${course.totalSubLessons} Sub-lessons Complete</p>
                         
-                        <button class="btn-primary" style="margin-top: 1rem; width: 100%;" onclick="TM_COURSE.resumeCourse()">
+                        <button class="btn-primary" style="margin-top: 0.5rem; width: 100%;" onclick="TM_COURSE.resumeCourse()">
                             ▶ Resume Best Lesson
                         </button>
                     </div>
-                     <div class="stats-row" style="margin-top: 1rem;">
+                     <div class="stats-row" style="margin-top: 0.5rem;">
                         <div class="stat-card">
                             <span class="stat-icon">🔥</span>
                             <span class="stat-label">Streak</span>

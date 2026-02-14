@@ -22,6 +22,7 @@
     display: grid;
     grid-template-columns: 300px minmax(0, 1fr) 300px;
     gap: 0;
+    width: 100%;
     height: calc(100vh - 64px);
     /* Full height minus header */
     overflow: hidden;
@@ -77,7 +78,7 @@
 .cp-main-content {
     background: var(--bg-primary);
     overflow-y: auto;
-    padding: 2rem;
+    padding: 0.75rem 1rem;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -87,7 +88,6 @@
 /* Center Content - Max Width Wrapper */
 .cp-content-wrapper {
     width: 100%;
-    max-width: 900px;
 }
 
 /* Navigation Items */
@@ -231,7 +231,7 @@
 /* --- Lesson Detail View (Center Column) --- */
 .lesson-detail-view {
     padding: 3rem;
-    max-width: 800px;
+    width: 100%;
     margin: 0 auto;
     color: var(--text-primary);
     animation: fadeIn 0.3s ease;
@@ -256,6 +256,7 @@
     margin: 0;
     background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -368,9 +369,9 @@
 }
 
 .course-modal-content {
-    width: 90%;
-    max-width: 1200px;
-    height: 90%;
+    width: 95%;
+    max-width: 1920px;
+    height: 95%;
     background: var(--bg-primary);
     /* Should match the main app bg or be slightly lighter */
     border: 1px solid var(--border);
@@ -429,7 +430,6 @@
 
 .modal-arena {
     width: 100%;
-    max-width: 900px;
 }
 
 /* Override Metrics HUD for Modal to look cooler */
@@ -648,8 +648,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
+    margin-bottom: 12px;
+    padding: 10px 16px;
     background: var(--bg-tertiary);
     border-radius: 12px;
     border: 1px solid var(--border);
@@ -657,14 +657,14 @@
 }
 
 .user-info h2 {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: var(--text-primary);
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .user-info p {
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 0.85rem;
 }
 
 .btn-settings {
@@ -690,28 +690,28 @@
 
 .progress-card {
     background: var(--card-bg);
-    padding: 30px;
+    padding: 12px;
     border-radius: 12px;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     backdrop-filter: blur(8px);
 }
 
 .progress-card h3 {
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: var(--text-primary);
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .progress-bar {
     width: 100%;
-    height: 30px;
+    height: 18px;
     background: rgba(15, 23, 42, 0.5);
     /* Very dark for contrast */
-    border-radius: 15px;
+    border-radius: 9px;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     border: 1px solid var(--border);
 }
 
@@ -730,18 +730,18 @@
 
 .progress-card>p {
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
 }
 
 .stats-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 12px;
 }
 
 .stat-card {
     background: var(--card-bg);
-    padding: 20px;
+    padding: 8px;
     border-radius: 12px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border);
@@ -752,20 +752,20 @@
 }
 
 .stat-icon {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    font-size: 1.4rem;
+    margin-bottom: 4px;
     color: var(--accent-secondary);
 }
 
 .stat-label {
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
 }
 
 .stat-value {
     color: var(--text-primary);
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 700;
 }
 
@@ -779,14 +779,14 @@
 .lessons-container {
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .lesson-card {
     background: var(--card-bg);
-    padding: 25px;
+    padding: 12px;
     border-radius: 12px;
     box-shadow: var(--shadow-sm);
     transition: all 0.3s ease;
@@ -1781,6 +1781,7 @@
 .modal-bottom-ad {
     display: none;
 }
+
 /* ===== CUSTOM SCROLLBARS (Tactical/Dark) ===== */
 ::-webkit-scrollbar {
     width: 6px;
@@ -1804,12 +1805,10 @@
 
 /* 1. Skeleton Loaders */
 .tm-skeleton {
-    background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.03) 25%,
-        rgba(255, 255, 255, 0.08) 50%,
-        rgba(255, 255, 255, 0.03) 75%
-    );
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.03) 25%,
+            rgba(255, 255, 255, 0.08) 50%,
+            rgba(255, 255, 255, 0.03) 75%);
     background-size: 200% 100%;
     animation: skeleton-pulse 1.5s infinite;
     border-radius: 8px;
@@ -1818,23 +1817,34 @@
 }
 
 @keyframes skeleton-pulse {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 /* 2. Micro-interactions: Hover & Active States */
-.cp-lesson-item, .lesson-card, .btn-primary, .course-btn {
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                box-shadow 0.2s ease, 
-                background 0.2s ease;
+.cp-lesson-item,
+.lesson-card,
+.btn-primary,
+.course-btn {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s ease,
+        background 0.2s ease;
 }
 
-.cp-lesson-item:hover, .lesson-card:hover {
+.cp-lesson-item:hover,
+.lesson-card:hover {
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.05);
 }
 
-.cp-lesson-item:active, .lesson-card:active, .btn-primary:active {
+.cp-lesson-item:active,
+.lesson-card:active,
+.btn-primary:active {
     transform: scale(0.97);
 }
 
@@ -1852,11 +1862,11 @@
 
 /* 4. Visual Course Map Components */
 .course-map-container {
-    padding: 2rem;
+    padding: 1rem;
     background: var(--bg-secondary);
     border-radius: 16px;
     border: 1px solid var(--border);
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .map-path {
@@ -1869,8 +1879,8 @@
 
 .map-node {
     flex-shrink: 0;
-    width: 60px;
-    height: 60px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: var(--bg-primary);
     border: 2px solid var(--border);
@@ -1926,6 +1936,13 @@
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
 }
