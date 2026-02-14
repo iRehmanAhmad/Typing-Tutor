@@ -74,7 +74,7 @@ const StatsView = () => {
             },
             y: {
                 beginAtZero: true,
-                grid: { color: 'rgba(255,255,255,0.05)' },
+                grid: { color: 'rgba(0,0,0,0.05)' }, // This is still slightly hardcoded but better for light mode
                 ticks: { color: '#64748b' }
             }
         }
@@ -94,7 +94,7 @@ const StatsView = () => {
         <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">
             <div className="flex justify-between items-end">
                 <div>
-                    <h2 className="text-4xl font-black tracking-tighter italic uppercase">Performance Analytics</h2>
+                    <h2 className="text-4xl font-black tracking-tighter italic uppercase text-text-primary">Performance Analytics</h2>
                     <p className="text-text-muted font-medium">Deep dive into your typing progression journey.</p>
                 </div>
             </div>
@@ -124,18 +124,18 @@ const StatsView = () => {
                 <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-8">Recent History</h3>
                 <div className="space-y-4">
                     {history.slice(-5).reverse().map((h, i) => (
-                        <div key={i} className="flex items-center justify-between p-4 bg-bg-tertiary/30 rounded-2xl border border-white/5">
+                        <div key={i} className="flex items-center justify-between p-4 bg-bg-tertiary/30 rounded-2xl border border-border">
                             <div className="flex items-center gap-4">
                                 <div className="w-10 h-10 bg-accent/20 rounded-xl flex items-center justify-center text-accent font-black">
                                     {h.wpm}
                                 </div>
                                 <div>
-                                    <p className="text-sm font-bold uppercase tracking-tight">{h.lessonId ? `Lesson ${h.lessonId}` : 'Practice Session'}</p>
+                                    <p className="text-sm font-bold uppercase tracking-tight text-text-primary">{h.lessonId ? `Lesson ${h.lessonId}` : 'Practice Session'}</p>
                                     <p className="text-[10px] text-text-muted uppercase">{new Date(h.date).toLocaleDateString()}</p>
                                 </div>
                             </div>
                             <div className="text-right">
-                                <p className="text-sm font-black text-green-400">{h.accuracy}% ACC</p>
+                                <p className="text-sm font-black text-green-500">{h.accuracy}% ACC</p>
                                 <p className="text-[10px] text-text-muted uppercase">{(Object.values(h.mistakes || {}).reduce((a, b) => a + b, 0))} ERRORS</p>
                             </div>
                         </div>
@@ -147,9 +147,9 @@ const StatsView = () => {
 };
 
 const StatMetric = ({ label, value, unit }) => (
-    <div className="bg-bg-secondary border border-border rounded-3xl p-6 text-center">
+    <div className="bg-bg-secondary border border-border rounded-3xl p-6 text-center shadow-lg">
         <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2">{label}</p>
-        <p className="text-4xl font-black italic tracking-tighter">{value}<small className="text-sm not-italic opacity-50 ml-1">{unit}</small></p>
+        <p className="text-4xl font-black italic tracking-tighter text-text-primary">{value}<small className="text-sm not-italic opacity-50 ml-1">{unit}</small></p>
     </div>
 );
 

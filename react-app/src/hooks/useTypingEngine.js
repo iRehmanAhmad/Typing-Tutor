@@ -8,13 +8,22 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
     const [typedChars, setTypedChars] = useState(0);
     const [correctChars, setCorrectChars] = useState(0);
     const [mistakes, setMistakes] = useState(0);
+    const [accuracyMap, setAccuracyMap] = useState({}); // { index: boolean }
     const [mistakesMap, setMistakesMap] = useState({});
     const [wpmSamples, setWpmSamples] = useState([]);
     const [results, setResults] = useState(null);
 
+    const [currentWPM, setCurrentWPM] = useState(0);
+
     const timerRef = useRef(null);
     const startTimeRef = useRef(null);
     const lastSampleTimeRef = useRef(null);
+
+    // Use refs for counters to avoid stale closures in intervals
+    const correctCharsRef = useRef(0);
+    const typedCharsRef = useRef(0);
+    const mistakesMapRef = useRef({});
+    const accuracyMapRef = useRef({});
 
     const reset = useCallback(() => {
         setIsRunning(false);
@@ -25,8 +34,14 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
         setCorrectChars(0);
         setMistakes(0);
         setMistakesMap({});
+        setAccuracyMap({});
         setWpmSamples([]);
         setResults(null);
+        setCurrentWPM(0);
+        correctCharsRef.current = 0;
+        typedCharsRef.current = 0;
+        mistakesMapRef.current = {};
+        accuracyMapRef.current = {};
         if (timerRef.current) clearInterval(timerRef.current);
     }, [duration]);
 
@@ -34,9 +49,13 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
         setIsRunning(false);
         if (timerRef.current) clearInterval(timerRef.current);
 
-        const netWPM = Math.round(Math.max(0, (correctChars / 5) / (duration / 60)));
-        const grossWPM = Math.round((typedChars / 5) / (duration / 60));
-        const accuracy = typedChars ? Math.round((correctChars / typedChars) * 100) : 0;
+        const now = Date.now();
+        const elapsedSec = startTimeRef.current ? (now - startTimeRef.current) / 1000 : duration;
+        const effectiveTime = Math.max(1, elapsedSec); // Avoid division by zero
+
+        const netWPM = Math.round(Math.max(0, (correctCharsRef.current / 5) / (effectiveTime / 60)));
+        const grossWPM = Math.round((typedCharsRef.current / 5) / (effectiveTime / 60));
+        const accuracy = typedCharsRef.current ? Math.round((correctCharsRef.current / typedCharsRef.current) * 100) : 0;
 
         // Calculate Consistency
         const samples = wpmSamples.length > 0 ? wpmSamples : [netWPM];
@@ -51,13 +70,16 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
             netWPM,
             accuracy,
             consistency,
-            mistakes: mistakesMap,
-            samples
+            mistakes: mistakesMapRef.current,
+            samples,
+            charCount: typedCharsRef.current,
+            correctCount: correctCharsRef.current
         };
 
+        setCurrentWPM(netWPM);
         setResults(finalResults);
         if (onComplete) onComplete(finalResults);
-    }, [correctChars, typedChars, duration, mistakesMap, wpmSamples, onComplete]);
+    }, [duration, wpmSamples, onComplete]);
 
     const start = useCallback(() => {
         if (isRunning) return;
@@ -68,24 +90,26 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
 
         timerRef.current = setInterval(() => {
             setTimeLeft((prev) => {
+                const now = Date.now();
+                const currentElapsed = (now - startTimeRef.current) / 1000;
+                const activeWPM = Math.round((correctCharsRef.current / 5) / (Math.max(1, currentElapsed) / 60));
+                setCurrentWPM(activeWPM);
+
                 if (prev <= 1) {
                     finish();
                     return 0;
                 }
 
                 // Sample WPM every second
-                const now = Date.now();
                 if (now - lastSampleTimeRef.current >= 1000) {
-                    const elapsedSec = (now - startTimeRef.current) / 1000;
-                    const currentWPM = Math.round((correctChars / 5) / (elapsedSec / 60));
-                    setWpmSamples(prevSamples => [...prevSamples, currentWPM]);
+                    setWpmSamples(prevSamples => [...prevSamples, activeWPM]);
                     lastSampleTimeRef.current = now;
                 }
 
                 return prev - 1;
             });
         }, 1000);
-    }, [isRunning, finish, correctChars]);
+    }, [isRunning, finish]);
 
     const handleKey = useCallback((key) => {
         if (isPaused) return;
@@ -96,9 +120,16 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
 
         if (key === 'Backspace') {
             if (currentIndex > 0) {
-                // We don't historically track correctness per index here easily without a buffer state
-                // but for React we can handle this better. 
-                // For now, simplified backspace:
+                const prevIndex = currentIndex - 1;
+                // If we are moving back, check if the char we're leaving was correct
+                if (accuracyMapRef.current[prevIndex]) {
+                    correctCharsRef.current = Math.max(0, correctCharsRef.current - 1);
+                    setCorrectChars(correctCharsRef.current);
+                }
+
+                // Keep the mistake in accuracyMap even if backspaced? 
+                // Usually persistent errors stay red even if you fix them in "hard" modes,
+                // but for standard practice, we just move the pointer.
                 setCurrentIndex(prev => prev - 1);
             }
             return;
@@ -107,19 +138,22 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
         if (key.length !== 1) return;
 
         const expected = text[currentIndex];
-        setTypedChars(prev => prev + 1);
+        typedCharsRef.current += 1;
+        setTypedChars(typedCharsRef.current);
 
         if (key === expected) {
-            setCorrectChars(prev => prev + 1);
+            correctCharsRef.current += 1;
+            setCorrectChars(correctCharsRef.current);
+            accuracyMapRef.current[currentIndex] = true;
         } else {
             setMistakes(prev => prev + 1);
             const keyLabel = expected === ' ' ? 'Space' : expected;
-            setMistakesMap(prev => ({
-                ...prev,
-                [keyLabel]: (prev[keyLabel] || 0) + 1
-            }));
+            mistakesMapRef.current[keyLabel] = (mistakesMapRef.current[keyLabel] || 0) + 1;
+            setMistakesMap({ ...mistakesMapRef.current });
+            accuracyMapRef.current[currentIndex] = false;
         }
 
+        setAccuracyMap({ ...accuracyMapRef.current });
         setCurrentIndex(prev => prev + 1);
         if (currentIndex + 1 >= text.length) {
             finish();
@@ -135,9 +169,11 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
         isPaused,
         timeLeft,
         currentIndex,
-        typedChars,
-        correctChars,
+        typedChars: typedCharsRef.current,
+        correctChars: correctCharsRef.current,
         mistakes,
+        accuracyMap,
+        currentWPM,
         results,
         handleKey,
         start,

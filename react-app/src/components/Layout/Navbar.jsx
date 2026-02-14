@@ -1,59 +1,71 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useTabs } from '../../context/TabContext';
+import { useProgress } from '../../context/ProgressContext';
+import TacticalSwitcher from './TacticalSwitcher';
+
+const NavButton = ({ id, active, onClick, children }) => (
+    <button
+        onClick={onClick}
+        className={`
+            px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all
+            ${active
+                ? 'bg-accent text-background shadow-[0_0_15px_rgba(var(--accent-rgb),0.4)]'
+                : 'text-text-muted hover:text-text-primary hover:bg-white/5'}
+        `}
+    >
+        {children}
+    </button>
+);
 
 const Navbar = () => {
     const { user, login, logout } = useAuth();
     const { activeTab, changeTab } = useTabs();
-
-    const navItems = [
-        { id: 'home', label: 'Home' },
-        { id: 'course', label: 'Course' },
-        { id: 'test', label: 'Test' },
-        { id: 'stats', label: 'Stats' },
-    ];
+    const { progress } = useProgress();
 
     return (
-        <nav className="bg-bg-secondary border-b border-border py-4 px-6 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md bg-opacity-80">
-            <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center font-black text-white shadow-lg">T</div>
-                <h1 className="text-xl font-bold tracking-tight">Typing Master <span className="text-xs font-normal text-text-muted">Pro</span></h1>
-            </div>
-
-            <div className="flex items-center gap-6">
-                {navItems.map(item => (
-                    <button
-                        key={item.id}
-                        onClick={() => changeTab(item.id)}
-                        className={`text-sm font-medium transition ${activeTab === item.id ? 'text-accent' : 'hover:text-accent'}`}
-                    >
-                        {item.label}
-                    </button>
-                ))}
-
-                {user ? (
-                    <div className="flex items-center gap-4 border-l border-border pl-6">
-                        <div className="text-right hidden sm:block">
-                            <p className="text-sm font-bold">{user.displayName || 'Learner'}</p>
-                            <p className="text-[10px] text-accent font-black uppercase tracking-widest">Level 1</p>
-                        </div>
-                        <button
-                            onClick={logout}
-                            className="w-10 h-10 rounded-full border border-border hover:border-accent transition overflow-hidden"
-                        >
-                            <img src={user.photoURL} alt="profile" />
-                        </button>
+        <header className="py-2 border-b border-border bg-background sticky top-0 z-[100] backdrop-blur-md">
+            <div className="container mx-auto px-4 flex items-center justify-between">
+                <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-2">
+                        <span className="text-2xl animate-pulse-soft">⌨️</span>
+                        <h1 className="text-xl font-black tracking-tighter italic uppercase text-text-primary">Typing Master</h1>
                     </div>
-                ) : (
-                    <button
-                        onClick={login}
-                        className="bg-accent px-6 py-2 rounded-full font-bold text-sm hover:translate-y-[-2px] transition shadow-lg"
-                    >
-                        Sign In
-                    </button>
-                )}
+
+                    <nav className="hidden md:flex items-center gap-1 bg-bg-secondary p-1 rounded-2xl border border-border shadow-sm">
+                        <NavButton id="home" active={activeTab === 'home'} onClick={() => changeTab('home')}>Dashboard</NavButton>
+                        <NavButton id="course" active={activeTab === 'course'} onClick={() => changeTab('course')}>Learning</NavButton>
+                        <NavButton id="test" active={activeTab === 'test'} onClick={() => changeTab('test')}>Test Arena</NavButton>
+                        <NavButton id="stats" active={activeTab === 'stats'} onClick={() => changeTab('stats')}>Stats Hub</NavButton>
+                    </nav>
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <TacticalSwitcher />
+                    {user ? (
+                        <div className="flex items-center gap-3 px-4 py-2 bg-accent/10 border border-accent/20 rounded-2xl">
+                            <div className="text-right hidden sm:block">
+                                <p className="text-[11px] font-bold leading-none text-text-primary">{user.displayName || 'Learner'}</p>
+                                <p className="text-[9px] text-accent font-black uppercase tracking-widest mt-1">{progress?.xp || 0} XP</p>
+                            </div>
+                            <button
+                                onClick={logout}
+                                className="w-8 h-8 rounded-full border border-border hover:border-accent transition overflow-hidden shadow-lg"
+                            >
+                                <img src={user.photoURL} alt="profile" className="w-full h-full object-cover" />
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={login}
+                            className="bg-accent px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest hover:translate-y-[-2px] transition shadow-[0_0_15px_rgba(var(--accent-rgb),0.3)] text-background"
+                        >
+                            Initialize Session
+                        </button>
+                    )}
+                </div>
             </div>
-        </nav>
+        </header>
     );
 };
 

@@ -9,6 +9,7 @@ import { useProgress } from '../../context/ProgressContext';
 import { AnimatePresence } from 'framer-motion';
 
 const CourseView = () => {
+    const { progress } = useProgress();
     const [selectedCourse] = useState(COURSES.basic);
     const [activeSubLesson, setActiveSubLesson] = useState(null);
     const [isDashboard, setIsDashboard] = useState(true);
@@ -59,13 +60,13 @@ const CourseView = () => {
 
             {/* Final Graduation Certificate */}
             <AnimatePresence>
-                {progress.completedSubLessons?.some(s => s.id === '12.5') && (
+                {(progress?.completedSubLessons?.length >= selectedCourse.totalSubLessons) && (
                     <CertificateGenerator
                         username={progress.username || 'Student'}
                         courseName={selectedCourse.name}
                         date={progress.lastUpdated}
                         onClose={() => {
-                            // Optionally hide it after viewing or allow re-viewing from stats
+                            // Certificate logic
                         }}
                     />
                 )}

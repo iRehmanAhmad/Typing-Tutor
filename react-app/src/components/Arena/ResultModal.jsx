@@ -79,18 +79,18 @@ const ResultModal = ({ results, onRetry, onClose }) => {
             >
                 <div className="p-8 space-y-8">
                     <div className="text-center">
-                        <h2 className="text-4xl font-black mb-2 italic tracking-tighter">SESSION SUMMARY</h2>
+                        <h2 className="text-4xl font-black mb-2 italic tracking-tighter text-text-primary">SESSION SUMMARY</h2>
                         <div className="h-1 w-20 bg-accent mx-auto rounded-full"></div>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <StatItem label="NET SPEED" value={results.netWPM} unit="WPM" color="text-accent" />
-                        <StatItem label="ACCURACY" value={results.accuracy} unit="%" color="text-green-400" />
-                        <StatItem label="CONSISTENCY" value={results.consistency} unit="%" color="text-purple-400" />
+                        <StatItem label="ACCURACY" value={results.accuracy} unit="%" color="text-green-500" />
+                        <StatItem label="CONSISTENCY" value={results.consistency} unit="%" color="text-purple-500" />
                         <StatItem label="GROSS" value={results.grossWPM} unit="WPM" color="text-text-muted" />
                     </div>
 
-                    <div className="bg-bg-tertiary/50 rounded-3xl p-6 border border-white/5">
+                    <div className="bg-bg-tertiary/50 rounded-3xl p-6 border border-border">
                         <h3 className="text-xs font-black text-text-muted uppercase tracking-widest mb-4">Speed Flow</h3>
                         <div className="h-40">
                             <Line data={chartData} options={chartOptions} />
@@ -100,13 +100,13 @@ const ResultModal = ({ results, onRetry, onClose }) => {
                     <div className="flex gap-4">
                         <button
                             onClick={onRetry}
-                            className="flex-1 py-5 bg-white text-black font-black rounded-2xl hover:bg-gray-200 transition active:scale-95"
+                            className="flex-1 py-5 bg-accent text-background font-black rounded-2xl hover:opacity-90 transition active:scale-95 shadow-lg"
                         >
                             RETRY SESSION
                         </button>
                         <button
                             onClick={onClose}
-                            className="px-8 py-5 bg-bg-tertiary text-white font-black rounded-2xl border border-white/5 hover:bg-bg-secondary transition"
+                            className="px-8 py-5 bg-bg-tertiary text-text-primary font-black rounded-2xl border border-border hover:bg-bg-secondary transition"
                         >
                             CLOSE
                         </button>
@@ -118,7 +118,7 @@ const ResultModal = ({ results, onRetry, onClose }) => {
 };
 
 const StatItem = ({ label, value, unit, color }) => (
-    <div className="bg-bg-tertiary/30 p-4 rounded-2xl border border-white/5 text-center">
+    <div className="bg-bg-tertiary/30 p-4 rounded-2xl border border-border text-center shadow-sm">
         <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">{label}</p>
         <p className={`text-2xl font-black ${color}`}>{value} <small className="text-xs opacity-50 uppercase">{unit}</small></p>
     </div>
