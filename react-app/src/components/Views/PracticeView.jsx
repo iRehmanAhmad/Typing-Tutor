@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TypingArena from '../Arena/TypingArena';
-import ResultModal from '../Arena/ResultModal';
 import { useTypingEngine } from '../../hooks/useTypingEngine';
 import { useProgress } from '../../context/ProgressContext';
+import { usePlatform } from '../../context/PlatformContext';
+import SEO from '../Layout/SEO';
 
 // --- Components ---
 
@@ -14,13 +15,14 @@ const DrillCard = ({ title, description, icon, color, onClick, isLocked }) => (
         onClick={onClick}
         disabled={isLocked}
         className={`
-            relative overflow-hidden rounded-3xl p-6 text-left border transition-all h-full flex flex-col
+            relative overflow - hidden rounded - 3xl p - 6 text - left border transition - all h - full flex flex - col
             ${isLocked
                 ? 'bg-bg-secondary/20 border-border/50 opacity-50 grayscale cursor-not-allowed'
-                : 'bg-bg-secondary/50 border-border hover:border-accent hover:shadow-[0_0_30px_rgba(var(--accent-rgb),0.1)]'}
-        `}
+                : 'bg-bg-secondary/50 border-border hover:border-accent hover:shadow-[0_0_30px_rgba(var(--accent-rgb),0.1)]'
+            }
+`}
     >
-        <div className={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center text-2xl ${color}`}>
+        <div className={`w - 12 h - 12 rounded - xl mb - 4 flex items - center justify - center text - 2xl ${color} `}>
             {icon}
         </div>
         <h3 className="text-xl font-black italic uppercase tracking-tighter text-text-primary mb-2">
@@ -36,7 +38,7 @@ const DrillCard = ({ title, description, icon, color, onClick, isLocked }) => (
 );
 
 const AdUnit = ({ className = "" }) => (
-    <div className={`relative overflow-hidden bg-bg-secondary border border-border/40 rounded-3xl p-4 flex items-center justify-center min-h-[250px] ${className}`}>
+    <div className={`relative overflow - hidden bg - bg - secondary border border - border / 40 rounded - 3xl p - 4 flex items - center justify - center min - h - [250px] ${className} `}>
         <div className="absolute top-2 left-4 flex items-center gap-2">
             <span className="text-[7px] font-black uppercase tracking-[0.3em] text-text-muted opacity-40">Sponsored Intel</span>
         </div>
@@ -53,6 +55,7 @@ const AdUnit = ({ className = "" }) => (
 
 const PracticeView = () => {
     const { progress } = useProgress();
+    const { isMobile } = usePlatform();
     const [mode, setMode] = useState('dashboard'); // 'dashboard', 'precision', 'custom', 'zen'
     const [customText, setCustomText] = useState('');
     const [generatedText, setGeneratedText] = useState('');
@@ -156,7 +159,13 @@ const PracticeView = () => {
     const currentWPM = Math.round((correctChars / 5) / (((mode === 'active_zen' ? 3600 : 60) - timeLeft) / 60) || 0);
 
     return (
-        <div className="relative max-w-7xl mx-auto px-4 h-[calc(100vh-100px)]">
+        <div className="max-w-7xl mx-auto min-h-[80vh] flex flex-col relative">
+            <SEO
+                title="Firing Range | Custom Drills"
+                description="Hone your skills with targeted drills. Focus on weak keys, custom text, or enter Zen Mode for flow state training."
+            />
+
+            {/* Header Area */}
 
             {/* Dashboard Mode */}
             {mode === 'dashboard' && (

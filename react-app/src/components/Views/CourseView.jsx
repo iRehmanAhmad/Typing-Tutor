@@ -8,6 +8,9 @@ import CourseCatalog from '../Course/CourseCatalog';
 import IdentityModal from '../Course/IdentityModal';
 import { useProgress } from '../../context/ProgressContext';
 import { useAuth } from '../../context/AuthContext';
+import { useTabs } from '../../context/TabContext';
+import { usePlatform } from '../../context/PlatformContext';
+import SEO from '../Layout/SEO';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const CourseView = () => {
@@ -50,7 +53,11 @@ const CourseView = () => {
     };
 
     return (
-        <div className="relative max-w-[1600px] mx-auto px-4 h-[calc(100vh-100px)]">
+        <div className="relative max-w-7xl mx-auto space-y-6">
+            <SEO
+                title={activeSubLesson ? `Lesson ${activeSubLesson.id}: ${activeSubLesson.title}` : "Tactical Training Academy"}
+                description="Structured typing courses to improve your speed and accuracy. Master the keyboard with military precision."
+            />
             {/* Identity Verification Modal */}
             <IdentityModal
                 isOpen={showIdentityModal}

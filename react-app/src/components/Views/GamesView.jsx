@@ -47,6 +47,7 @@ const GameCard = ({ title, description, icon, color, onClick, isLocked, tag }) =
 
 import SpeedCircuit from '../Games/SpeedCircuit';
 import ThreatNeutralization from '../Games/ThreatNeutralization';
+import SEO from '../Layout/SEO';
 
 // --- Main View ---
 
@@ -63,12 +64,15 @@ const GamesView = () => {
     };
 
     return (
-        <div className="relative max-w-7xl mx-auto px-4 h-[calc(100vh-100px)]">
-
-            {/* Dashboard Mode */}
-            {mode === 'dashboard' && (
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8 py-8">
-                    <div className="text-center space-y-2">
+        <div className="max-w-7xl mx-auto min-h-[80vh] flex flex-col">
+            <SEO
+                title="Tactical Operations | Arcade"
+                description="Engage in high-stakes typing games. Race in Speed Circuit or defend the mainframe in Threat Neutralization."
+            />
+            {/* Header */}
+            <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12">
+                {mode === 'dashboard' ? (
+                    <div className="text-center md:text-left space-y-2">
                         <h1 className="text-4xl font-black italic text-text-primary tracking-tighter uppercase">
                             Tactical Arcade
                         </h1>
@@ -76,7 +80,17 @@ const GamesView = () => {
                             High-Stakes Simulations // Competitive & Survival
                         </p>
                     </div>
+                ) : (
+                    <button onClick={handleBack} className="text-text-muted hover:text-accent transition-colors flex items-center gap-2">
+                        <span className="text-xl">←</span>
+                        <span className="text-sm font-bold uppercase tracking-widest">Back to Arcade</span>
+                    </button>
+                )}
+            </header>
 
+            {/* Dashboard Mode */}
+            {mode === 'dashboard' && (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8 py-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         <GameCard
                             title="Speed Circuit"

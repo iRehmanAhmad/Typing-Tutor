@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
+import { useLeaderboard } from '../../hooks/useLeaderboard';
 
 // --- Tactical Word Data ---
 const WORD_POOL = [
@@ -41,6 +43,8 @@ const ParticleBurst = ({ x, y, color = 'bg-cyan-400' }) => {
 };
 
 const ThreatNeutralization = ({ onAbort }) => {
+    const { user } = useAuth();
+    const { submitResult } = useLeaderboard('threat_neutralization');
     const [gameState, setGameState] = useState('briefing'); // 'briefing', 'active', 'gameover'
     const [activeWords, setActiveWords] = useState([]); // [{ id, word, x, y, speed }]
     const [input, setInput] = useState('');
@@ -184,6 +188,14 @@ const ThreatNeutralization = ({ onAbort }) => {
                         const nextS = s - 1;
                         if (nextS <= 0) {
                             setGameState('gameover');
+                            // Submit to Global Leaderboard
+                            submitResult({
+                                name: user?.displayName || 'Guest',
+                                uid: user?.uid || 'guest',
+                                score: scoreRef.current,
+                                wave: wave,
+                                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                            });
                             return 0;
                         }
                         setGlitchEffect(true);

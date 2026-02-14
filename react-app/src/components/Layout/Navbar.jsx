@@ -22,6 +22,25 @@ const Navbar = () => {
     const { user, login, logout } = useAuth();
     const { activeTab, changeTab } = useTabs();
     const { progress } = useProgress();
+    const [deferredPrompt, setDeferredPrompt] = React.useState(null);
+
+    React.useEffect(() => {
+        const handler = (e) => {
+            e.preventDefault();
+            setDeferredPrompt(e);
+        };
+        window.addEventListener('beforeinstallprompt', handler);
+        return () => window.removeEventListener('beforeinstallprompt', handler);
+    }, []);
+
+    const handleInstall = async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            setDeferredPrompt(null);
+        }
+    };
 
     return (
         <header className="py-2 border-b border-border bg-background sticky top-0 z-[100] backdrop-blur-md">
@@ -39,6 +58,7 @@ const Navbar = () => {
                         <NavButton active={activeTab === 'games'} onClick={() => changeTab('games')}>Games</NavButton>
                         <NavButton active={activeTab === 'test'} onClick={() => changeTab('test')}>Test Arena</NavButton>
                         <NavButton active={activeTab === 'stats'} onClick={() => changeTab('stats')}>Stats Hub</NavButton>
+                        <NavButton active={activeTab === 'admin'} onClick={() => changeTab('admin')}>HQ</NavButton>
                     </nav>
                 </div>
 
@@ -65,9 +85,19 @@ const Navbar = () => {
                             Initialize Session
                         </button>
                     )}
+                    {deferredPrompt && (
+                        <button
+                            onClick={handleInstall}
+                            className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-bg-secondary border border-accent/20 hover:bg-accent/10 transition-colors group"
+                            title="Install App"
+                        >
+                            <span className="text-sm">⬇️</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-text-muted group-hover:text-accent">Install</span>
+                        </button>
+                    )}
                 </div>
             </div>
-        </header>
+        </header >
     );
 };
 

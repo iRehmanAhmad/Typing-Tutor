@@ -12,6 +12,15 @@ export const TabProvider = ({ children }) => {
         window.scrollTo(0, 0); // Reset scroll on tab change
     };
 
+    // Global listener for tab switching (useful for components outside the hierarchy)
+    React.useEffect(() => {
+        const handler = (e) => {
+            if (e.detail) changeTab(e.detail);
+        };
+        window.addEventListener('switchTab', handler);
+        return () => window.removeEventListener('switchTab', handler);
+    }, []);
+
     return (
         <TabContext.Provider value={{ activeTab, changeTab }}>
             {children}

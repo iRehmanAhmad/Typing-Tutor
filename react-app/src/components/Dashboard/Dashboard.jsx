@@ -1,6 +1,9 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useProgress } from '../../context/ProgressContext';
+import BroadcastBanner from './BroadcastBanner';
+import TacticalTip from './TacticalTip';
+import SEO from '../Layout/SEO';
 
 const Dashboard = () => {
     const { user } = useAuth();
@@ -8,6 +11,11 @@ const Dashboard = () => {
 
     return (
         <div className="space-y-6">
+            <SEO
+                title="Command Dashboard"
+                description="Track your typing progress, view daily missions, and monitor your tactical performance."
+            />
+            <BroadcastBanner />
             <div className="bg-bg-tertiary p-8 rounded-3xl border border-border shadow-2xl relative overflow-hidden group">
                 <div className="relative z-10">
                     <h2 className="text-3xl font-black mb-2 text-text-primary">Welcome Back, {user?.displayName || 'Friend'}! 👋</h2>
@@ -30,7 +38,9 @@ const Dashboard = () => {
                     <p className="text-3xl font-black text-purple-500">{progress?.unlockedAchievements?.length || 0} <small className="text-sm font-bold">Unlocked</small></p>
                 </div>
             </div>
-        </div >
+
+            <TacticalTip />
+        </div>
     );
 };
 
