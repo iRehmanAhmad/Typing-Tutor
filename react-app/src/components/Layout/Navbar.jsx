@@ -1,8 +1,17 @@
 import React from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useTabs } from '../../context/TabContext';
 
 const Navbar = () => {
     const { user, login, logout } = useAuth();
+    const { activeTab, changeTab } = useTabs();
+
+    const navItems = [
+        { id: 'home', label: 'Home' },
+        { id: 'course', label: 'Course' },
+        { id: 'test', label: 'Test' },
+        { id: 'stats', label: 'Stats' },
+    ];
 
     return (
         <nav className="bg-bg-secondary border-b border-border py-4 px-6 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md bg-opacity-80">
@@ -12,9 +21,15 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center gap-6">
-                <button className="text-sm font-medium hover:text-accent transition">Home</button>
-                <button className="text-sm font-medium hover:text-accent transition">Course</button>
-                <button className="text-sm font-medium hover:text-accent transition">Test</button>
+                {navItems.map(item => (
+                    <button
+                        key={item.id}
+                        onClick={() => changeTab(item.id)}
+                        className={`text-sm font-medium transition ${activeTab === item.id ? 'text-accent' : 'hover:text-accent'}`}
+                    >
+                        {item.label}
+                    </button>
+                ))}
 
                 {user ? (
                     <div className="flex items-center gap-4 border-l border-border pl-6">
