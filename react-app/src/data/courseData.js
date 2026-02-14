@@ -88,6 +88,36 @@ export const COURSES = {
                 ]
             }
         ]
+    },
+    speed: {
+        id: 'speed',
+        name: 'Speed Booster',
+        description: 'Elite drills for 100+ WPM velocity',
+        totalLessons: 8,
+        totalSubLessons: 45,
+        lessons: [
+            { id: 1, title: 'Burst & Sprint', subLessons: [] },
+            { id: 2, title: 'Rhythm Control', subLessons: [] }
+        ]
+    },
+    dev: {
+        id: 'dev',
+        name: 'Developer Typing',
+        description: 'Master code syntax: {}; () [] <>',
+        totalLessons: 10,
+        totalSubLessons: 50,
+        lessons: [
+            { id: 1, title: 'HTML/JSX Syntax', subLessons: [] },
+            { id: 2, title: 'JavaScript Logic', subLessons: [] }
+        ]
+    },
+    pro: {
+        id: 'pro',
+        name: 'Professional Dictation',
+        description: 'Legal & Medical transcription standards',
+        totalLessons: 15,
+        totalSubLessons: 80,
+        lessons: []
     }
 };
 

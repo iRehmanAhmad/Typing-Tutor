@@ -1,8 +1,23 @@
 import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, isFocusMode }) => {
+const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, isFocusMode, currentWPM = 0 }) => {
     const containerRef = useRef(null);
+
+    // Heat Color Logic: Blue -> Green -> Gold
+    const getHeatColor = () => {
+        if (!isRunning) return 'border-border';
+        if (currentWPM > 80) return 'border-accent shadow-[0_0_50px_rgba(var(--accent-rgb),0.2)]';
+        if (currentWPM > 40) return 'border-green-500/50 shadow-[0_0_40px_rgba(34,197,94,0.15)]';
+        return 'border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.1)]';
+    };
+
+    const getHeatText = () => {
+        if (!isRunning) return '';
+        if (currentWPM > 80) return 'text-accent';
+        if (currentWPM > 40) return 'text-green-500';
+        return 'text-blue-500';
+    };
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -34,10 +49,27 @@ const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, is
         <div
             ref={containerRef}
             className={`
-                bg-bg-secondary backdrop-blur-xl border border-border rounded-3xl p-10 min-h-[320px] relative font-mono text-3xl leading-relaxed select-none transition-all duration-700
-                ${isFocusMode ? 'shadow-[0_0_50px_rgba(var(--accent-rgb),0.1)]' : 'shadow-2xl'}
+                bg-bg-secondary backdrop-blur-xl border rounded-3xl p-10 min-h-[320px] relative font-mono text-3xl leading-relaxed select-none transition-all duration-700
+                ${getHeatColor()}
             `}
         >
+            {/* Heat Status Indicator */}
+            <AnimatePresence>
+                {isRunning && (
+                    <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -10 }}
+                        className="absolute top-4 left-6 flex items-center gap-2"
+                    >
+                        <span className={`w-1.5 h-1.5 rounded-full animate-ping ${currentWPM > 40 ? (currentWPM > 80 ? 'bg-accent' : 'bg-green-500') : 'bg-blue-500'}`} />
+                        <span className={`text-[8px] font-black uppercase tracking-[0.3em] ${getHeatText()}`}>
+                            {currentWPM > 80 ? 'ELITE STREAK' : (currentWPM > 40 ? 'PERFORMANCE NOMINAL' : 'INITIALIZING STREAM')}
+                        </span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <div className="relative z-10 flex flex-wrap gap-x-[1px]">
                 {chars.map(({ char, i, status, opacity }) => (
                     <span

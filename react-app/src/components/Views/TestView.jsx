@@ -53,6 +53,34 @@ const AdUnit = ({ type = "leaderboard", className = "" }) => (
     </div>
 );
 
+const Sparkline = ({ values = [], height = 20, width = 60 }) => {
+    if (values.length < 2) return <div style={{ height, width }} className="opacity-10 bg-accent/20 rounded-sm" />;
+
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+
+    const points = values.map((v, i) => {
+        const x = (i / (values.length - 1)) * width;
+        const y = height - ((v - min) / range) * height;
+        return `${x},${y}`;
+    }).join(' ');
+
+    return (
+        <svg width={width} height={height} className="overflow-visible">
+            <path
+                d={`M ${points}`}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-accent/40"
+            />
+        </svg>
+    );
+};
+
 const TestView = () => {
     const { user, login } = useAuth();
     const { updateProgress } = useProgress();
@@ -121,13 +149,23 @@ const TestView = () => {
         reset();
     }, [difficulty, reset]);
 
+    const currentWPM = Math.round((correctChars / 5) / ((60 - timeLeft) / 60) || 0);
+
     return (
-        <div className="max-w-6xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-700 pb-10">
+        <div className="relative max-w-6xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-700 pb-10">
+            {/* Tactical Grid Background Overlay (Local to this tab) */}
+            <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]"
+                style={{
+                    backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)',
+                    backgroundSize: '40px 40px'
+                }}
+            />
+
             {/* Top Ad Unit (Leaderboard) */}
-            <AdUnit className={`${isActive ? 'opacity-0 scale-95 h-0 overflow-hidden' : 'opacity-100'} transition-all duration-700`} />
+            <AdUnit className={`${isActive ? 'opacity-0 scale-95 h-0 overflow-hidden' : 'opacity-100'} transition-all duration-700 relative z-10`} />
 
             {/* Ultra-Compact Tactical HUD */}
-            <div className={`transition-all duration-700 flex flex-col md:flex-row items-center gap-4 bg-bg-secondary/50 p-2 rounded-3xl border border-border backdrop-blur-xl ${isActive ? 'opacity-10 blur-md scale-95' : 'opacity-100'}`}>
+            <div className={`relative z-10 transition-all duration-700 flex flex-col md:flex-row items-center gap-4 bg-bg-secondary/50 p-2 rounded-3xl border border-border backdrop-blur-xl ${isActive ? 'opacity-10 blur-md scale-95' : 'opacity-100'}`}>
                 {/* Left: Branding */}
                 <div className="flex items-center gap-4 flex-1 w-full md:w-auto px-2">
                     <h2 className="text-xl font-black tracking-tighter italic text-text-primary border-r border-border pr-4 hidden lg:block">
@@ -146,14 +184,19 @@ const TestView = () => {
                 <div className="flex bg-bg-primary rounded-2xl p-1 gap-1 border border-border/50 shadow-inner">
                     <Metric cluster compact label="TIME" value={timeLeft} unit="S" accent="text-accent" />
                     <div className="w-[1px] h-6 bg-border self-center mx-1" />
-                    <Metric cluster compact label="WPM" value={Math.round((correctChars / 5) / ((60 - timeLeft) / 60) || 0)} accent="text-text-primary" />
+                    <div className="flex items-center">
+                        <Metric cluster compact label="WPM" value={currentWPM} accent="text-text-primary" />
+                        <div className="pr-2 pt-2">
+                            <Sparkline values={[...Array(10)].map(() => 40 + Math.random() * 20)} />
+                        </div>
+                    </div>
                     <div className="w-[1px] h-6 bg-border self-center mx-1" />
                     <Metric cluster compact label="ACC" value={typedChars ? Math.round((correctChars / typedChars) * 100) : 100} unit="%" accent="text-green-500" />
                 </div>
             </div>
 
             {/* Mode Selection Row */}
-            <div className={`transition-all duration-700 flex flex-col items-center justify-center gap-3 px-4 py-4 bg-bg-primary/30 rounded-2xl border border-border/50 ${isActive ? 'opacity-0 h-0 overflow-hidden -mt-4' : 'opacity-100'}`}>
+            <div className={`relative z-10 transition-all duration-700 flex flex-col items-center justify-center gap-3 px-4 py-4 bg-bg-primary/30 rounded-2xl border border-border/50 ${isActive ? 'opacity-0 h-0 overflow-hidden -mt-4' : 'opacity-100'}`}>
                 <div className="flex items-center gap-3">
                     <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_8px_#eab308]" />
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">Target Objective:</p>
@@ -178,7 +221,7 @@ const TestView = () => {
                 </div>
             </div>
 
-            <div className={`transition-all duration-500 transform ${isActive ? 'scale-105 -mt-8' : ''} relative`}>
+            <div className={`relative z-10 transition-all duration-500 transform ${isActive ? 'scale-105 -mt-8' : ''}`}>
                 <TypingArena
                     text={difficultyText[difficulty]}
                     currentIndex={currentIndex}
@@ -186,6 +229,7 @@ const TestView = () => {
                     handleKey={handleKey}
                     isRunning={isRunning}
                     isFocusMode={isActive}
+                    currentWPM={currentWPM}
                 />
 
                 {/* Tactical Abort Overhang */}
@@ -205,7 +249,7 @@ const TestView = () => {
                 </AnimatePresence>
             </div>
 
-            <div className={`space-y-4 transition-opacity duration-700 ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+            <div className={`relative z-10 space-y-4 transition-opacity duration-700 ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                 <div className="flex flex-col items-center gap-2">
                     <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.4em] flex items-center gap-4">
                         <span className="w-12 h-[1px] bg-gradient-to-r from-transparent to-border" />

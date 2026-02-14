@@ -57,22 +57,31 @@ const CompetitionTables = ({ latestResults = [], dailyTop = [], monthlyTop = [] 
                                 getActiveData().map((result, idx) => (
                                     <motion.tr
                                         key={idx}
-                                        initial={{ opacity: 0, y: 5 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: idx * 0.03 }}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{
+                                            delay: idx * 0.04,
+                                            type: "spring",
+                                            stiffness: 100,
+                                            damping: 20
+                                        }}
                                         className={`
-                                            hover:bg-bg-primary/20 transition-all group relative
-                                            ${idx === 0 ? 'bg-accent/[0.04] shadow-[inset_3px_0_0_0_#eab308]' : ''}
-                                            ${idx === 1 ? 'bg-accent/[0.03] shadow-[inset_3px_0_0_0_#94a3b8]' : ''}
-                                            ${idx === 2 ? 'bg-accent/[0.02] shadow-[inset_3px_0_0_0_#92400e]' : ''}
+                                            hover:bg-accent/[0.08] transition-all group relative cursor-default
+                                            hover:scale-[1.01] hover:shadow-[0_0_20px_rgba(var(--accent-rgb),0.05)]
+                                            ${idx === 0 ? 'bg-accent/[0.04]' : ''}
+                                            ${idx === 1 ? 'bg-accent/[0.03]' : ''}
+                                            ${idx === 2 ? 'bg-accent/[0.02]' : ''}
                                             ${result.isMe ? 'bg-accent/[0.05] border-l-2 border-l-accent' : ''}
                                         `}
                                     >
-                                        <td className="px-4 py-1.5 text-center">
-                                            {idx === 0 && <span className="text-lg filter drop-shadow-sm">🥇</span>}
-                                            {idx === 1 && <span className="text-lg filter drop-shadow-sm">🥈</span>}
-                                            {idx === 2 && <span className="text-lg filter drop-shadow-sm">🥉</span>}
-                                            {idx > 2 && <span className="font-black italic text-text-muted text-[10px]">{idx + 1}</span>}
+                                        <td className="px-4 py-1.5 text-center relative overflow-hidden">
+                                            {/* Holographic Sheen Effect */}
+                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-full group-hover:animate-shimmer pointer-events-none" />
+
+                                            {idx === 0 && <span className="text-lg filter drop-shadow-sm group-hover:scale-110 transition-transform inline-block">🥇</span>}
+                                            {idx === 1 && <span className="text-lg filter drop-shadow-sm group-hover:scale-110 transition-transform inline-block">🥈</span>}
+                                            {idx === 2 && <span className="text-lg filter drop-shadow-sm group-hover:scale-110 transition-transform inline-block">🥉</span>}
+                                            {idx > 2 && <span className="font-black italic text-text-muted text-[10px] group-hover:text-text-primary transition-colors">{idx + 1}</span>}
                                         </td>
                                         <td className="px-4 py-1.5">
                                             <div className="flex items-center gap-2">
