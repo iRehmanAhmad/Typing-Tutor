@@ -49,11 +49,42 @@ export const ProgressProvider = ({ children }) => {
     const updateProgress = async (newData) => {
         if (!user) return;
         const userDocRef = doc(db, 'users', user.uid);
+
         try {
-            await setDoc(userDocRef, {
+            // Functional state update approach to handle array merging
+            const currentProgress = progress;
+            const updatedCompletedSubLessons = [...(currentProgress.completedSubLessons || [])];
+
+            if (newData.completedSubLessons) {
+                newData.completedSubLessons.forEach(newSub => {
+                    const existingIdx = updatedCompletedSubLessons.findIndex(s => s.id === newSub.id);
+                    if (existingIdx > -1) {
+                        // Update if higher stars
+                        if (newSub.stars > updatedCompletedSubLessons[existingIdx].stars) {
+                            updatedCompletedSubLessons[existingIdx] = newSub;
+                        }
+                    } else {
+                        updatedCompletedSubLessons.push(newSub);
+                    }
+                });
+            }
+
+            const updatedWeakKeys = { ...(currentProgress.weakKeys || {}) };
+            if (newData.weakKeys) {
+                Object.entries(newData.weakKeys).forEach(([key, count]) => {
+                    updatedWeakKeys[key] = (updatedWeakKeys[key] || 0) + count;
+                });
+            }
+
+            const finalData = {
                 ...newData,
+                completedSubLessons: updatedCompletedSubLessons,
+                weakKeys: updatedWeakKeys,
+                xp: (currentProgress.xp || 0) + (newData.xp || 0),
                 lastUpdated: new Date().toISOString()
-            }, { merge: true });
+            };
+
+            await setDoc(userDocRef, finalData, { merge: true });
         } catch (err) {
             console.error("Error updating progress:", err);
         }
