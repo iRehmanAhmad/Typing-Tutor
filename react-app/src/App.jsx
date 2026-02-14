@@ -5,8 +5,10 @@ import { ThemeProvider } from './context/ThemeContext';
 import Navbar from './components/Layout/Navbar';
 import HomeView from './components/Views/HomeView';
 import CourseView from './components/Views/CourseView';
+import PracticeView from './components/Views/PracticeView';
 import TestView from './components/Views/TestView';
 import StatsView from './components/Views/StatsView';
+import GamesView from './components/Views/GamesView';
 
 const AppContent = () => {
   const { activeTab } = useTabs();
@@ -28,7 +30,9 @@ const AppContent = () => {
       <main className="container mx-auto px-4 py-8">
         {activeTab === 'home' && <HomeView />}
         {activeTab === 'course' && <CourseView />}
+        {activeTab === 'practice' && <PracticeView />}
         {activeTab === 'test' && <TestView />}
+        {activeTab === 'games' && <GamesView />}
         {activeTab === 'stats' && <StatsView />}
       </main>
     </div>

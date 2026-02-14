@@ -97,6 +97,21 @@ const ResultModal = ({ results, onRetry, onClose }) => {
                         </div>
                     </div>
 
+                    {/* Mission Debrief Ad Interstitial */}
+                    <div className="bg-bg-secondary border border-border/50 rounded-2xl p-4 flex items-center justify-between group overflow-hidden relative">
+                        <div className="absolute inset-0 bg-accent/5 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-700" />
+                        <div className="relative z-10 flex items-center gap-4">
+                            <div className="bg-bg-primary p-2 rounded-lg border border-border">
+                                <span className="text-2xl">🚀</span>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-text-primary uppercase text-xs tracking-wider">Deploy Production Code</h4>
+                                <p className="text-[10px] text-text-muted">Automated CI/CD pipelines for elite dev teams.</p>
+                            </div>
+                        </div>
+                        <span className="relative z-10 text-[8px] font-black uppercase tracking-widest text-text-muted border border-border px-2 py-1 rounded">Sponsored</span>
+                    </div>
+
                     <div className="flex gap-4">
                         <button
                             onClick={onRetry}

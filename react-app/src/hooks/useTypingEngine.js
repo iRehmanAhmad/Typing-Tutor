@@ -113,10 +113,14 @@ export const useTypingEngine = (text, duration = 60, onComplete) => {
 
     const handleKey = useCallback((key) => {
         if (isPaused) return;
+
+        let shouldProcess = isRunning;
         if (!isRunning && currentIndex === 0 && key.length === 1) {
             start();
+            shouldProcess = true;
         }
-        if (!isRunning) return;
+
+        if (!shouldProcess) return;
 
         if (key === 'Backspace') {
             if (currentIndex > 0) {

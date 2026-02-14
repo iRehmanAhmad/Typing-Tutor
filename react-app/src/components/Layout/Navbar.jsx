@@ -33,10 +33,12 @@ const Navbar = () => {
                     </div>
 
                     <nav className="hidden md:flex items-center gap-1 bg-bg-secondary p-1 rounded-2xl border border-border shadow-sm">
-                        <NavButton id="home" active={activeTab === 'home'} onClick={() => changeTab('home')}>Dashboard</NavButton>
-                        <NavButton id="course" active={activeTab === 'course'} onClick={() => changeTab('course')}>Learning</NavButton>
-                        <NavButton id="test" active={activeTab === 'test'} onClick={() => changeTab('test')}>Test Arena</NavButton>
-                        <NavButton id="stats" active={activeTab === 'stats'} onClick={() => changeTab('stats')}>Stats Hub</NavButton>
+                        <NavButton active={activeTab === 'home'} onClick={() => changeTab('home')}>Dashboard</NavButton>
+                        <NavButton active={activeTab === 'course'} onClick={() => changeTab('course')}>Learning</NavButton>
+                        <NavButton active={activeTab === 'practice'} onClick={() => changeTab('practice')}>Drills</NavButton>
+                        <NavButton active={activeTab === 'games'} onClick={() => changeTab('games')}>Games</NavButton>
+                        <NavButton active={activeTab === 'test'} onClick={() => changeTab('test')}>Test Arena</NavButton>
+                        <NavButton active={activeTab === 'stats'} onClick={() => changeTab('stats')}>Stats Hub</NavButton>
                     </nav>
                 </div>
 
