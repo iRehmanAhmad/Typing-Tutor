@@ -12,7 +12,12 @@ const TestView = () => {
     const onComplete = (results) => {
         updateProgress({
             xp: Math.round(results.netWPM * results.accuracy / 10),
-            weakKeys: results.mistakes
+            weakKeys: results.mistakes,
+            sessionResult: {
+                wpm: results.netWPM,
+                accuracy: results.accuracy,
+                mistakes: results.mistakes
+            }
         });
     };
 

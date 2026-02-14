@@ -3,7 +3,9 @@ import CourseSidebar from '../Course/CourseSidebar';
 import CourseDashboard from '../Course/CourseDashboard';
 import CourseStats from '../Course/CourseStats';
 import LessonPlayer from '../Course/LessonPlayer';
+import CertificateGenerator from '../Course/CertificateGenerator';
 import { COURSES } from '../../data/courseData';
+import { useProgress } from '../../context/ProgressContext';
 import { AnimatePresence } from 'framer-motion';
 
 const CourseView = () => {
@@ -51,6 +53,20 @@ const CourseView = () => {
                     <LessonPlayer
                         subLesson={activeSubLesson}
                         onClose={() => setActiveSubLesson(null)}
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* Final Graduation Certificate */}
+            <AnimatePresence>
+                {progress.completedSubLessons?.some(s => s.id === '12.5') && (
+                    <CertificateGenerator
+                        username={progress.username || 'Student'}
+                        courseName={selectedCourse.name}
+                        date={progress.lastUpdated}
+                        onClose={() => {
+                            // Optionally hide it after viewing or allow re-viewing from stats
+                        }}
                     />
                 )}
             </AnimatePresence>

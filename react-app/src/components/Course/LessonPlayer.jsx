@@ -13,7 +13,13 @@ const LessonPlayer = ({ subLesson, onClose }) => {
         updateProgress({
             xp: Math.round(results.netWPM * results.accuracy / 10),
             weakKeys: results.mistakes,
-            completedSubLessons: [{ id: subLesson.id, stars: results.accuracy >= 98 ? 3 : results.accuracy >= 95 ? 2 : 1 }]
+            completedSubLessons: [{ id: subLesson.id, stars: results.accuracy >= 98 ? 3 : results.accuracy >= 95 ? 2 : 1 }],
+            sessionResult: {
+                wpm: results.netWPM,
+                accuracy: results.accuracy,
+                mistakes: results.mistakes,
+                lessonId: subLesson.id
+            }
         });
     };
 
@@ -66,6 +72,20 @@ const LessonPlayer = ({ subLesson, onClose }) => {
                             onRetry={engine.reset}
                             onClose={onClose}
                         />
+                    </div>
+                ) : subLesson.type === 'completion_final' ? (
+                    <div className="flex flex-col items-center justify-center min-h-[400px] text-center space-y-8 animate-in zoom-in duration-1000">
+                        <span className="text-8xl">🎓</span>
+                        <div>
+                            <h2 className="text-5xl font-black italic tracking-tighter uppercase mb-2">Congratulations!</h2>
+                            <p className="text-xl text-text-muted">You have successfully mastered the Basic Typing Course.</p>
+                        </div>
+                        <button
+                            onClick={() => onComplete({ accuracy: 100, netWPM: 0, mistakes: {} })}
+                            className="px-12 py-6 bg-white text-black font-black rounded-3xl hover:bg-gray-200 transition scale-110 shadow-[0_20px_40px_rgba(255,255,255,0.2)]"
+                        >
+                            CLAIM GRADUATION CERTIFICATE
+                        </button>
                     </div>
                 ) : (
                     <div className="bg-bg-secondary p-12 rounded-[40px] border border-border">

@@ -5,6 +5,7 @@ import Navbar from './components/Layout/Navbar';
 import HomeView from './components/Views/HomeView';
 import CourseView from './components/Views/CourseView';
 import TestView from './components/Views/TestView';
+import StatsView from './components/Views/StatsView';
 
 const AppContent = () => {
   const { activeTab } = useTabs();
@@ -16,7 +17,7 @@ const AppContent = () => {
         {activeTab === 'home' && <HomeView />}
         {activeTab === 'course' && <CourseView />}
         {activeTab === 'test' && <TestView />}
-        {activeTab === 'stats' && <HomeView />} {/* Stats placeholder */}
+        {activeTab === 'stats' && <StatsView />}
       </main>
     </div>
   );

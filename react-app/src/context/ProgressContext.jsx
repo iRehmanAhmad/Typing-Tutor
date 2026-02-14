@@ -76,13 +76,25 @@ export const ProgressProvider = ({ children }) => {
                 });
             }
 
+            const updatedHistory = [...(currentProgress.history || [])];
+            if (newData.sessionResult) {
+                updatedHistory.push({
+                    ...newData.sessionResult,
+                    date: new Date().toISOString()
+                });
+            }
+
             const finalData = {
                 ...newData,
                 completedSubLessons: updatedCompletedSubLessons,
                 weakKeys: updatedWeakKeys,
+                history: updatedHistory,
                 xp: (currentProgress.xp || 0) + (newData.xp || 0),
                 lastUpdated: new Date().toISOString()
             };
+
+            // Remove temporary sessionResult from Firestore save
+            delete finalData.sessionResult;
 
             await setDoc(userDocRef, finalData, { merge: true });
         } catch (err) {
