@@ -262,7 +262,7 @@ const ThreatNeutralization = ({ onAbort }) => {
                     </button>
                     <div>
                         <div className="flex items-center gap-2">
-                            <h2 className="font-black italic uppercase text-lg leading-none text-purple-500">Threat Neutralization</h2>
+                            <h2 className="font-black uppercase text-lg leading-none text-purple-500">Threat Neutralization</h2>
                             <span className="text-[10px] bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded border border-purple-500/30 font-black">WAVE_{wave}</span>
                         </div>
                         <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider mt-1">
@@ -299,7 +299,7 @@ const ThreatNeutralization = ({ onAbort }) => {
 
                 {/* HUD Background Text */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5 select-none overflow-hidden">
-                    <h1 className="text-[25vw] font-black italic uppercase tracking-tighter transform -rotate-12 translate-y-10 whitespace-nowrap">
+                    <h1 className="text-[25vw] font-black uppercase tracking-tighter transform -rotate-12 translate-y-10 whitespace-nowrap">
                         THREAT_LEVEL_{wave}
                     </h1>
                 </div>
@@ -376,13 +376,13 @@ const ThreatNeutralization = ({ onAbort }) => {
                 {/* Overlays */}
                 {gameState === 'briefing' && (
                     <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-bg-primary/90 backdrop-blur-xl">
-                        <motion.span initial={{ scale: 2, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-9xl font-black text-purple-500 italic uppercase tabular-nums">{countdown}</motion.span>
+                        <motion.span initial={{ scale: 2, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-9xl font-black text-purple-500 uppercase tabular-nums">{countdown}</motion.span>
                     </div>
                 )}
 
                 {gameState === 'gameover' && (
                     <div className="absolute inset-0 z-[60] flex flex-col items-center justify-center bg-bg-primary/95 backdrop-blur-2xl rounded-2xl space-y-8">
-                        <h1 className="text-7xl font-black italic uppercase text-red-500 tracking-tighter">MAINFRAME_BREACHED</h1>
+                        <h1 className="text-7xl font-black uppercase text-red-500 tracking-tighter">MAINFRAME_BREACHED</h1>
                         <p className="text-4xl font-black text-text-primary">SCORE: {score.toLocaleString()}</p>
                         <button onClick={() => {
                             setScore(0); scoreRef.current = 0; setShields(3); setWave(1); setActiveWords([]); setGameState('briefing'); setCountdown(3); setInput('');

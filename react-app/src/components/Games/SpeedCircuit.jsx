@@ -159,7 +159,7 @@ const SpeedCircuit = ({ onAbort }) => {
                 <div className="flex items-center gap-4">
                     <button onClick={onAbort} className="w-8 h-8 flex items-center justify-center rounded-lg bg-bg-tertiary hover:bg-accent hover:text-white transition-colors">←</button>
                     <div>
-                        <h2 className="font-black italic uppercase text-lg leading-none text-orange-500">Speed Circuit</h2>
+                        <h2 className="font-black uppercase text-lg leading-none text-orange-500">Speed Circuit</h2>
                         <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">{gameState === 'briefing' ? 'System Check...' : gameState === 'finished' ? 'Operation Complete' : 'Extraction in Progress'}</p>
                     </div>
                 </div>
@@ -197,7 +197,7 @@ const SpeedCircuit = ({ onAbort }) => {
                 {gameState === 'finished' && (
                     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-bg-primary/95 backdrop-blur-xl rounded-3xl space-y-6 border border-border/50">
                         <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center space-y-2">
-                            <h1 className="text-5xl font-black italic uppercase text-accent tracking-tighter drop-shadow-[0_0_20px_#fac904]">
+                            <h1 className="text-5xl font-black uppercase text-accent tracking-tighter drop-shadow-[0_0_20px_#fac904]">
                                 {raceResult === 1 ? '🥇 VICTORY' : raceResult === 2 ? '🥈 2ND PLACE' : raceResult === 3 ? '🥉 3RD PLACE' : '❌ ELIMINATED'}
                             </h1>
                             <p className="text-text-muted font-black uppercase tracking-[0.3em] text-xs">Operational Parameters Exceeded</p>

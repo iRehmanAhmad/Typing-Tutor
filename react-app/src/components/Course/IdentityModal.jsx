@@ -78,7 +78,7 @@ const IdentityModal = ({ isOpen, onClose, onComplete }) => {
                         {step === 'input' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="text-2xl font-black italic uppercase tracking-tighter text-text-primary">
+                                    <h2 className="text-2xl font-black uppercase tracking-tighter text-text-primary">
                                         Identify Yourself
                                     </h2>
                                     <p className="text-sm text-text-muted mt-2">
@@ -131,7 +131,7 @@ const IdentityModal = ({ isOpen, onClose, onComplete }) => {
                         {step === 'confirm' && (
                             <div className="space-y-6">
                                 <div>
-                                    <h2 className="text-2xl font-black italic uppercase tracking-tighter text-text-primary">
+                                    <h2 className="text-2xl font-black uppercase tracking-tighter text-text-primary">
                                         Welcome Back
                                     </h2>
                                     <p className="text-sm text-text-muted mt-2">

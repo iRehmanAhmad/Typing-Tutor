@@ -11,7 +11,7 @@ const TacticalTip = ({ className = "" }) => {
             <div className="text-2xl mt-1 opacity-60">💡</div>
             <div>
                 <p className="text-[9px] font-black text-text-muted uppercase tracking-[0.3em] mb-1">HQ Tactical Tip</p>
-                <p className="text-xs font-medium text-text-secondary leading-relaxed italic">
+                <p className="text-xs font-medium text-text-secondary leading-relaxed">
                     {config.broadcast.tip}
                 </p>
             </div>

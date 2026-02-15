@@ -81,7 +81,7 @@ const CompetitionTables = ({ latestResults = [], dailyTop = [], monthlyTop = [] 
                                             {idx === 0 && <span className="text-lg filter drop-shadow-sm group-hover:scale-110 transition-transform inline-block">🥇</span>}
                                             {idx === 1 && <span className="text-lg filter drop-shadow-sm group-hover:scale-110 transition-transform inline-block">🥈</span>}
                                             {idx === 2 && <span className="text-lg filter drop-shadow-sm group-hover:scale-110 transition-transform inline-block">🥉</span>}
-                                            {idx > 2 && <span className="font-black italic text-text-muted text-[10px] group-hover:text-text-primary transition-colors">{idx + 1}</span>}
+                                            {idx > 2 && <span className="font-black text-text-muted text-[10px] group-hover:text-text-primary transition-colors">{idx + 1}</span>}
                                         </td>
                                         <td className="px-4 py-1.5">
                                             <div className="flex items-center gap-2">
@@ -104,16 +104,16 @@ const CompetitionTables = ({ latestResults = [], dailyTop = [], monthlyTop = [] 
                                             </div>
                                         </td>
                                         <td className="px-4 py-1.5 text-[10px] font-medium text-text-muted">{result.time}</td>
-                                        <td className="px-4 py-1.5 text-[10px] font-black text-text-secondary italic">
-                                            {result.words}<span className="text-text-muted opacity-30 not-italic font-medium mx-0.5">/</span>{result.chars}
+                                        <td className="px-4 py-1.5 text-[10px] font-black text-text-secondary">
+                                            {result.words}<span className="text-text-muted opacity-30 font-medium mx-0.5">/</span>{result.chars}
                                         </td>
                                         <td className={`px-4 py-1.5 text-[10px] font-black ${result.accuracy >= 98 ? 'text-green-500' : 'text-text-primary'}`}>
                                             {result.accuracy}%
                                         </td>
-                                        <td className={`px-4 py-1.5 text-lg font-black italic tracking-tighter ${idx < 3 ? 'text-accent' : 'text-accent/70'}`}>
+                                        <td className={`px-4 py-1.5 text-lg font-black tracking-tighter ${idx < 3 ? 'text-accent' : 'text-accent/70'}`}>
                                             {result.wpm}
                                         </td>
-                                        <td className="px-4 py-1.5 text-sm font-black italic tracking-tighter text-text-primary/70">{result.cpm}</td>
+                                        <td className="px-4 py-1.5 text-sm font-black tracking-tighter text-text-primary/70">{result.cpm}</td>
                                     </motion.tr>
                                 ))
                             ) : (

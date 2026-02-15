@@ -5,6 +5,7 @@ import { useTypingEngine } from '../../hooks/useTypingEngine';
 import { useProgress } from '../../context/ProgressContext';
 import { usePlatform } from '../../context/PlatformContext';
 import SEO from '../Layout/SEO';
+import ResultModal from '../Arena/ResultModal';
 
 // --- Components ---
 
@@ -15,17 +16,17 @@ const DrillCard = ({ title, description, icon, color, onClick, isLocked }) => (
         onClick={onClick}
         disabled={isLocked}
         className={`
-            relative overflow - hidden rounded - 3xl p - 6 text - left border transition - all h - full flex flex - col
+            relative overflow-hidden rounded-3xl p-6 text-left border transition-all h-full flex flex-col
             ${isLocked
                 ? 'bg-bg-secondary/20 border-border/50 opacity-50 grayscale cursor-not-allowed'
                 : 'bg-bg-secondary/50 border-border hover:border-accent hover:shadow-[0_0_30px_rgba(var(--accent-rgb),0.1)]'
             }
 `}
     >
-        <div className={`w - 12 h - 12 rounded - xl mb - 4 flex items - center justify - center text - 2xl ${color} `}>
+        <div className={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center text-2xl ${color}`}>
             {icon}
         </div>
-        <h3 className="text-xl font-black italic uppercase tracking-tighter text-text-primary mb-2">
+        <h3 className="text-xl font-black uppercase tracking-tighter text-text-primary mb-2">
             {title}
         </h3>
         <p className="text-xs font-bold text-text-muted leading-relaxed">
@@ -33,12 +34,12 @@ const DrillCard = ({ title, description, icon, color, onClick, isLocked }) => (
         </p>
 
         {/* Tactical Corner */}
-        <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/5 to-transparent -mr-8 -mt-8 rotate-45" />
+        <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-text-primary/5 to-transparent -mr-8 -mt-8 rotate-45" />
     </motion.button>
 );
 
 const AdUnit = ({ className = "" }) => (
-    <div className={`relative overflow - hidden bg - bg - secondary border border - border / 40 rounded - 3xl p - 4 flex items - center justify - center min - h - [250px] ${className} `}>
+    <div className={`relative overflow-hidden bg-bg-secondary border border-border/40 rounded-3xl p-4 flex items-center justify-center min-h-[250px] ${className}`}>
         <div className="absolute top-2 left-4 flex items-center gap-2">
             <span className="text-[7px] font-black uppercase tracking-[0.3em] text-text-muted opacity-40">Sponsored Intel</span>
         </div>
@@ -171,33 +172,33 @@ const PracticeView = () => {
             {mode === 'dashboard' && (
                 <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8 py-8">
                     <div className="text-center space-y-2">
-                        <h1 className="text-4xl font-black italic text-text-primary tracking-tighter uppercase">
-                            Tactical Range
+                        <h1 className="text-4xl font-black text-text-primary tracking-tighter uppercase">
+                            Practice Area
                         </h1>
                         <p className="text-text-muted font-bold text-sm uppercase tracking-widest">
-                            Refine Your Skills // Unranked Environment
+                            Improve Your Typing // Free Practice
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                         <DrillCard
-                            title="Precision Protocol"
-                            description="Targeted training sequence based on your performance profile."
+                            title="Weak Key Practice"
+                            description="Focus on the keys you find most difficult."
                             icon="🎯"
                             color="bg-red-500/10 text-red-500"
                             onClick={() => handleStartValues('precision')}
                         />
 
                         <DrillCard
-                            title="Sandbox Mode"
-                            description="Input custom operational params. Paste code, articles, or mission briefs."
+                            title="Custom Text"
+                            description="Type anything you want. Paste articles, code, or notes."
                             icon="📝"
                             color="bg-blue-500/10 text-blue-500"
                             onClick={() => handleStartValues('custom')}
                         />
                         <DrillCard
-                            title="Zen Focus"
-                            description="Endless endurance training. No timers. No pressure. Pure flow state."
+                            title="Relaxed Typing"
+                            description="Endless practice without pressure. Just focus on the words."
                             icon="🧘"
                             color="bg-green-500/10 text-green-500"
                             onClick={() => handleStartValues('zen')}
@@ -211,8 +212,8 @@ const PracticeView = () => {
                                 <span className="text-2xl">⚡</span>
                             </div>
                             <div>
-                                <h4 className="font-bold text-text-primary uppercase text-xs tracking-wider">Sponsored Simulation</h4>
-                                <p className="text-[10px] text-text-muted">Master cloud infrastructure with AWS Certification Training.</p>
+                                <h4 className="font-bold text-text-primary uppercase text-xs tracking-wider">Sponsored Training</h4>
+                                <p className="text-[10px] text-text-muted">Learn new skills with our training partners.</p>
                             </div>
                         </div>
                         <button className="px-4 py-2 bg-text-primary text-bg-primary text-[10px] font-black uppercase tracking-widest rounded-lg">
@@ -225,7 +226,7 @@ const PracticeView = () => {
             {/* Custom Setup Mode */}
             {mode === 'setup_custom' && (
                 <div className="max-w-2xl mx-auto py-12 space-y-6 animate-in fade-in zoom-in-95 duration-300">
-                    <h2 className="text-2xl font-black italic uppercase">Input Custom Data</h2>
+                    <h2 className="text-2xl font-black uppercase">Input Custom Data</h2>
                     <textarea
                         value={customText}
                         onChange={(e) => setCustomText(e.target.value)}
@@ -237,7 +238,7 @@ const PracticeView = () => {
                             Cancel
                         </button>
                         <button onClick={handleConfirmCustom} disabled={!customText} className="flex-1 py-4 rounded-xl bg-accent text-background font-black uppercase hover:brightness-110 transition-all disabled:opacity-50">
-                            Initialize
+                            Start
                         </button>
                     </div>
                 </div>
@@ -259,7 +260,7 @@ const PracticeView = () => {
                                     ←
                                 </button>
                                 <div>
-                                    <h2 className="font-black italic uppercase text-lg leading-none flex items-center gap-3">
+                                    <h2 className="font-black uppercase text-lg leading-none flex items-center gap-3">
                                         {mode === 'active_precision' ? 'Precision Protocol' : mode === 'active_zen' ? 'Zen Focus' : 'Sandbox'}
                                     </h2>
                                     <p className="text-[10px] font-bold text-text-muted uppercase tracking-wider">

@@ -11,11 +11,24 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-border: var(--border);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
 /* --- Themes --- */
 :root {
-  /* Default: Indigo Flux */
+  /* Premium Font Stacks */
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.theme-indigo-flux {
+  --font-primary: var(--font-body);
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
   --bg-tertiary: #334155;
@@ -26,58 +39,107 @@
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-muted: rgba(255, 255, 255, 0.4);
   --border: rgba(255, 255, 255, 0.08);
-
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .theme-cyber-tactical {
-  --bg-primary: #0b0f19;
-  --bg-secondary: #161b22;
-  --bg-tertiary: #21262d;
+  --font-primary: var(--font-body);
+  --bg-primary: #062016;
+  /* Dark Emerald */
+  --bg-secondary: #0a2d20;
+  --bg-tertiary: #104030;
   --accent: #4ade80;
   --accent-rgb: 74, 222, 128;
   --accent-secondary: #22c55e;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --border: rgba(74, 222, 128, 0.15);
 }
 
 .theme-black-ops {
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #171717;
-  --bg-tertiary: #262626;
+  --font-primary: var(--font-body);
+  --bg-primary: #1a0505;
+  /* Deep Blood Red */
+  --bg-secondary: #250808;
+  --bg-tertiary: #351010;
   --accent: #ef4444;
   --accent-rgb: 239, 68, 68;
   --accent-secondary: #b91c1c;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --border: rgba(239, 68, 68, 0.15);
 }
 
 .theme-elite-command {
-  --bg-primary: #121212;
-  --bg-secondary: #1e1e1e;
-  --bg-tertiary: #2d2d2d;
+  --font-primary: var(--font-body);
+  --bg-primary: #1a1405;
+  /* Deep Gold/Black */
+  --bg-secondary: #251d08;
+  --bg-tertiary: #352a10;
   --accent: #f59e0b;
   --accent-rgb: 245, 158, 11;
   --accent-secondary: #d97706;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --border: rgba(245, 158, 11, 0.15);
 }
 
 .theme-w3-classic {
+  --font-primary: var(--font-body);
   --bg-primary: #FFFFFF;
-  --bg-secondary: #f1f1f1;
-  --bg-tertiary: #e7e9eb;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
   --accent: #04AA6D;
   --accent-rgb: 4, 170, 109;
   --accent-secondary: #059862;
-  --text-primary: #212121;
-  --text-secondary: #4f4f4f;
-  --text-muted: #757575;
-  --border: rgba(0, 0, 0, 0.08);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border: rgba(15, 23, 42, 0.08);
 }
 
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  font-style: normal;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+/* Arena Overrides */
+.carbon-text-target {
+  font-family: var(--font-mono) !important;
 }
 
 /* --- Ultra-Compact Utilities --- */
@@ -149,6 +211,40 @@ body {
   100% {
     transform: translateY(100%);
   }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+
+  50% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+}
+
+@keyframes sparkle {
+
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-float {
+  animation: float 3s infinite ease-in-out;
+}
+
+.animate-sparkle {
+  animation: sparkle 2s infinite ease-in-out;
 }
 
 .animate-pulse-soft {

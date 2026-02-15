@@ -68,7 +68,7 @@ const VerifyCertificate = ({ certId }) => {
             >
                 {/* Security Watermark */}
                 <div className="absolute top-0 right-0 p-8 opacity-[0.05] pointer-events-none select-none">
-                    <div className="text-8xl font-black italic -rotate-12">VERIFIED</div>
+                    <div className="text-8xl font-black -rotate-12">VERIFIED</div>
                 </div>
 
                 <div className="flex flex-col items-center text-center space-y-8">
@@ -78,7 +78,7 @@ const VerifyCertificate = ({ certId }) => {
 
                     <div className="space-y-2">
                         <p className="text-[10px] font-black text-accent uppercase tracking-[0.5em]">Typing Master Operations</p>
-                        <h1 className="text-4xl md:text-5xl font-black italic tracking-tighter text-text-primary uppercase">Certificate of Proficiency</h1>
+                        <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-text-primary uppercase">Certificate of Proficiency</h1>
                     </div>
 
                     <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />

@@ -84,7 +84,7 @@ const StatsView = () => {
         return (
             <div className="flex flex-col items-center justify-center min-h-[400px] text-center space-y-4">
                 <span className="text-6xl">📊</span>
-                <h2 className="text-2xl font-black italic uppercase tracking-tighter">No Statistics Yet</h2>
+                <h2 className="text-2xl font-black uppercase tracking-tighter">No Statistics Yet</h2>
                 <p className="text-text-muted max-w-sm">Complete a few practice tests or lessons to see your progress visualized here.</p>
             </div>
         );
@@ -94,8 +94,8 @@ const StatsView = () => {
         <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">
             <div className="flex justify-between items-end">
                 <div>
-                    <h2 className="text-4xl font-black tracking-tighter italic uppercase text-text-primary">Performance Analytics</h2>
-                    <p className="text-text-muted font-medium">Deep dive into your typing progression journey.</p>
+                    <h2 className="text-4xl font-black tracking-tighter uppercase text-text-primary">My Progress Stats</h2>
+                    <p className="text-text-muted font-medium">Check how your typing speed and accuracy are improving.</p>
                 </div>
             </div>
 
@@ -107,13 +107,13 @@ const StatsView = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="bg-bg-secondary border border-border rounded-[40px] p-8">
-                    <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-8">Speed Evolution (WPM)</h3>
+                    <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-8">My Speed Trend (WPM)</h3>
                     <div className="h-64">
                         <Line data={wpmData} options={options} />
                     </div>
                 </div>
                 <div className="bg-bg-secondary border border-border rounded-[40px] p-8">
-                    <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-8">Accuracy Consistency (%)</h3>
+                    <h3 className="text-xs font-black text-text-muted uppercase tracking-[0.2em] mb-8">My Accuracy (%)</h3>
                     <div className="h-64">
                         <Bar data={accuracyData} options={options} />
                     </div>
@@ -149,7 +149,7 @@ const StatsView = () => {
 const StatMetric = ({ label, value, unit }) => (
     <div className="bg-bg-secondary border border-border rounded-3xl p-6 text-center shadow-lg">
         <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-2">{label}</p>
-        <p className="text-4xl font-black italic tracking-tighter text-text-primary">{value}<small className="text-sm not-italic opacity-50 ml-1">{unit}</small></p>
+        <p className="text-4xl font-black tracking-tighter text-text-primary">{value}<small className="text-sm opacity-50 ml-1">{unit}</small></p>
     </div>
 );
 

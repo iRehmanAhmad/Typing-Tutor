@@ -2,7 +2,7 @@ import React from 'react';
 import { useProgress } from '../../context/ProgressContext';
 import { motion } from 'framer-motion';
 
-const CourseDashboard = ({ course, onSelectLesson }) => {
+const CourseDashboard = ({ course, onSelectLesson, onSelectSubLesson }) => {
     const { progress } = useProgress();
 
     const calculateOverallProgress = () => {
@@ -10,183 +10,192 @@ const CourseDashboard = ({ course, onSelectLesson }) => {
         return (progress?.completedSubLessons?.length || 0) / course.totalSubLessons * 100;
     };
 
-    const getNextStep = () => {
-        for (const lesson of course.lessons) {
-            for (const sub of lesson.subLessons) {
-                if (!progress?.completedSubLessons?.some(c => c.id === sub.id)) {
-                    return { lesson, sub };
-                }
-            }
-        }
-        return null;
+    const isSubLessonCompleted = (subLessonId) => {
+        return progress?.completedSubLessons?.some(c => c.id === subLessonId);
     };
 
-    const nextStep = getNextStep();
+    const isLessonUnlocked = (lessonIndex) => {
+        if (lessonIndex === 0) return true;
+        const previousLesson = course.lessons[lessonIndex - 1];
+        return previousLesson.subLessons.every(sub =>
+            isSubLessonCompleted(sub.id)
+        );
+    };
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500 pb-10">
-            {/* Mission Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 bg-bg-secondary/50 p-6 rounded-3xl border border-border backdrop-blur-xl">
-                <div>
-                    <h2 className="text-2xl font-black tracking-tighter italic uppercase text-text-primary flex items-center gap-3">
-                        <span className="w-2 h-8 bg-accent rounded-sm shadow-[0_0_10px_rgba(var(--accent-rgb),0.5)]" />
-                        MISSION CONTROL
-                    </h2>
-                    <p className="text-text-muted text-xs font-bold tracking-widest uppercase mt-1 ml-5">
-                        OPERATIVE: <span className="text-accent">{progress?.username || 'RECRUIT'}</span> // STATUS: ACTIVE
-                    </p>
-                </div>
-                <div className="text-right">
-                    <p className="text-[9px] font-black text-text-muted uppercase tracking-[0.2em] mb-2">Campaign Mastery</p>
-                    <div className="flex items-center gap-3">
-                        <div className="flex gap-1">
-                            {[...Array(20)].map((_, i) => (
-                                <div
-                                    key={i}
-                                    className={`w-1.5 h-6 rounded-sm transition-all duration-500 ${(i / 20) * 100 < calculateOverallProgress()
+        <div className="space-y-4 animate-in fade-in duration-500 pb-10">
+            {/* Mission Header - Compact */}
+            <div className="bg-gradient-to-r from-bg-secondary/80 to-bg-secondary/50 p-4 rounded-2xl border border-border backdrop-blur-xl shadow-lg">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h2 className="text-lg font-black tracking-tighter uppercase text-text-primary flex items-center gap-2">
+                            <span className="w-1.5 h-6 bg-accent rounded-sm shadow-[0_0_10px_rgba(var(--accent-rgb),0.5)]" />
+                            {course.name}
+                        </h2>
+                        <p className="text-text-muted text-[10px] font-bold tracking-widest uppercase mt-0.5 ml-4">
+                            STUDENT: <span className="text-accent">{progress?.username || 'NEW LEARNER'}</span> // Current Status: Learning
+                        </p>
+                    </div>
+                    <div className="text-right">
+                        <p className="text-[8px] font-black text-text-muted uppercase tracking-[0.2em] mb-1">Course Progress</p>
+                        <div className="flex items-center gap-2">
+                            <div className="flex gap-0.5">
+                                {[...Array(15)].map((_, i) => (
+                                    <div
+                                        key={i}
+                                        className={`w-1 h-4 rounded-sm transition-all duration-500 ${(i / 15) * 100 < calculateOverallProgress()
                                             ? 'bg-accent shadow-[0_0_8px_rgba(var(--accent-rgb),0.6)]'
                                             : 'bg-bg-tertiary/50'
-                                        }`}
-                                />
-                            ))}
+                                            }`}
+                                    />
+                                ))}
+                            </div>
+                            <span className="text-lg font-black tracking-tighter text-accent">{Math.round(calculateOverallProgress())}%</span>
                         </div>
-                        <span className="text-2xl font-black italic tracking-tighter text-accent">{Math.round(calculateOverallProgress())}%</span>
                     </div>
                 </div>
             </div>
 
-            {/* Tactical Course Map */}
-            <div className="bg-bg-secondary/80 border border-border rounded-[30px] p-8 relative overflow-hidden group shadow-2xl backdrop-blur-md">
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03]" />
-                <div className="absolute top-0 right-0 p-8 opacity-[0.03] transform rotate-12 pointer-events-none select-none">
-                    <span className="text-[120px] font-black text-text-primary">INTEL</span>
-                </div>
+            {/* Lesson Cards - Compact */}
+            <div className="space-y-3">
+                {course.lessons.map((lesson, lessonIndex) => {
+                    const isUnlocked = isLessonUnlocked(lessonIndex);
+                    const completedSubLessons = lesson.subLessons.filter(sub =>
+                        isSubLessonCompleted(sub.id)
+                    ).length;
+                    const totalSubLessons = lesson.subLessons.length;
+                    const lessonProgress = totalSubLessons > 0 ? (completedSubLessons / totalSubLessons) * 100 : 0;
+                    const isCompleted = lessonProgress === 100 && totalSubLessons > 0;
 
-                <div className="flex items-center justify-between mb-8 relative z-10">
-                    <h3 className="font-black text-[10px] text-accent uppercase tracking-[0.3em] flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                        Active Operations
-                    </h3>
-                    <div className="text-[9px] font-black text-text-muted uppercase tracking-widest border border-white/10 px-2 py-1 rounded">
-                        Sector: Alpha
-                    </div>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-center gap-12 relative z-10 py-8">
-                    {course.lessons.map((lesson, idx) => {
-                        const isCompleted = progress?.completedSubLessons?.filter(c =>
-                            lesson.subLessons.some(s => s.id === c.id)
-                        ).length === lesson.subLessons.length && lesson.subLessons.length > 0;
-
-                        const isUnlocked = idx === 0 || course.lessons[idx - 1].subLessons.every(sub =>
-                            progress?.completedSubLessons?.some(c => c.id === sub.id)
-                        );
-
-                        return (
-                            <React.Fragment key={lesson.id}>
-                                <div className="relative group/node">
-                                    <motion.button
-                                        whileHover={isUnlocked ? { scale: 1.1 } : {}}
-                                        whileTap={isUnlocked ? { scale: 0.95 } : {}}
-                                        onClick={() => isUnlocked && onSelectLesson(lesson)}
-                                        className={`
-                                            w-20 h-20 rounded-2xl flex flex-col items-center justify-center transition-all relative z-10 border-2
-                                            ${isCompleted
-                                                ? 'bg-green-500/10 border-green-500 text-green-400 shadow-[0_0_30px_rgba(34,197,94,0.2)]'
-                                                : ''}
-                                            ${!isCompleted && isUnlocked
-                                                ? 'bg-accent/10 border-accent text-accent shadow-[0_0_30px_rgba(var(--accent-rgb),0.2)] animate-pulse-soft'
-                                                : ''}
-                                            ${!isUnlocked
-                                                ? 'bg-bg-tertiary/20 border-white/5 text-text-muted opacity-40 cursor-not-allowed'
-                                                : ''}
-                                        `}
-                                    >
-                                        <span className="text-[10px] uppercase tracking-widest font-black mb-1">Lesson</span>
-                                        <span className="text-2xl font-black italic">{lesson.id}</span>
-
-                                        {/* Holographic Scanline */}
-                                        {isUnlocked && (
-                                            <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
-                                                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent animate-scanline opacity-30" />
-                                            </div>
-                                        )}
-                                    </motion.button>
-
-                                    {/* Connection Line */}
-                                    {idx < course.lessons.length - 1 && (
-                                        <div className={`absolute top-1/2 -right-12 w-12 h-[2px] -translate-y-1/2 ${isUnlocked && isCompleted ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-bg-tertiary'}`} />
-                                    )}
+                    return (
+                        <motion.div
+                            key={lesson.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: lessonIndex * 0.05 }}
+                            className={`
+                                relative overflow-hidden rounded-2xl border backdrop-blur-sm
+                                transition-all duration-300
+                                ${isUnlocked
+                                    ? 'bg-bg-secondary/50 border-border hover:border-accent/40 hover:shadow-[0_0_20px_rgba(var(--accent-rgb),0.1)]'
+                                    : 'bg-bg-secondary/20 border-border/20 opacity-60 grayscale'
+                                }
+                            `}
+                        >
+                            {/* Progress Bar - Thinner */}
+                            {isUnlocked && lessonProgress > 0 && (
+                                <div className="absolute top-0 left-0 right-0 h-[2px] bg-bg-tertiary overflow-hidden">
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${lessonProgress}%` }}
+                                        className={`h-full ${isCompleted ? 'bg-green-500' : 'bg-gradient-to-r from-accent to-purple-500'}`}
+                                    />
                                 </div>
-                            </React.Fragment>
-                        );
-                    })}
-                </div>
-            </div>
+                            )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Priority Directive Card */}
-                <div className="bg-gradient-to-br from-accent/5 to-transparent border border-accent/20 rounded-3xl p-6 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-2 opacity-10">
-                        <svg className="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" /></svg>
-                    </div>
+                            <div className="p-4 relative z-10">
+                                {/* Lesson Header - Compact */}
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`
+                                            w-10 h-10 rounded-xl flex items-center justify-center border-2 relative
+                                            ${isCompleted
+                                                ? 'bg-green-500/10 border-green-500 text-green-400'
+                                                : isUnlocked
+                                                    ? 'bg-accent/10 border-accent text-accent'
+                                                    : 'bg-bg-tertiary/20 border-white/5 text-text-muted'
+                                            }
+                                        `}>
+                                            <span className="text-lg font-black">{lesson.id}</span>
+                                            {isCompleted && (
+                                                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full flex items-center justify-center text-white text-[8px]">
+                                                    ✓
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h3 className="text-base font-black uppercase text-text-primary leading-tight">
+                                                {lesson.title}
+                                            </h3>
+                                            <p className="text-[10px] text-text-secondary font-medium">
+                                                {lesson.description || `Master ${lesson.title.toLowerCase()} techniques`}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="text-[8px] font-black text-text-muted uppercase tracking-widest leading-none mb-1">
+                                            Status
+                                        </div>
+                                        <div className="text-lg font-black text-accent leading-none">
+                                            {completedSubLessons}/{totalSubLessons}
+                                        </div>
+                                    </div>
+                                </div>
 
-                    <h4 className="font-black text-[10px] mb-3 text-accent uppercase tracking-[0.2em] flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-accent rounded-full animate-ping" />
-                        Priority Directive
-                    </h4>
+                                {/* Sub-Lessons Grid - Tighter */}
+                                {totalSubLessons > 0 ? (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                                        {lesson.subLessons.map((subLesson, subIndex) => {
+                                            const isSubCompleted = isSubLessonCompleted(subLesson.id);
+                                            const isSubUnlocked = isUnlocked && (subIndex === 0 || isSubLessonCompleted(lesson.subLessons[subIndex - 1].id));
 
-                    <div className="space-y-4">
-                        <div>
-                            <p className="text-2xl font-black italic text-text-primary uppercase leading-none mb-1">
-                                {nextStep ? `Lesson ${nextStep.sub.id}` : 'All Objectives Clear'}
-                            </p>
-                            <p className="text-xs text-text-muted font-bold uppercase tracking-wide">
-                                {nextStep ? nextStep.sub.title : 'Stand by for further orders.'}
-                            </p>
-                        </div>
-
-                        {nextStep && (
-                            <button
-                                onClick={() => onSelectLesson(nextStep.lesson)}
-                                className="w-full py-4 bg-accent text-background text-xs font-black uppercase tracking-[0.2em] rounded-xl hover:bg-accent-secondary transition-all shadow-[0_0_20px_rgba(var(--accent-rgb),0.4)] hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group/btn"
-                            >
-                                Execute Mission
-                                <span className="text-lg group-hover/btn:translate-x-1 transition-transform">→</span>
-                            </button>
-                        )}
-                    </div>
-                </div>
-
-                {/* Operations Metrics Card */}
-                <div className="bg-bg-secondary border border-border rounded-3xl p-6 flex flex-col justify-between shadow-lg relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-green-500/5" />
-
-                    <div>
-                        <h4 className="font-black text-[10px] mb-2 text-text-muted uppercase tracking-[0.2em]">Operational Target</h4>
-                        <div className="flex items-end gap-2 mb-1">
-                            <span className="text-4xl font-black italic text-text-primary tracking-tighter">40</span>
-                            <span className="text-xs font-bold text-text-muted mb-1.5">WPM</span>
-                        </div>
-                        <p className="text-[10px] text-text-secondary font-bold uppercase tracking-wide opacity-60">Required for Certification</p>
-                    </div>
-
-                    <div className="space-y-2 mt-6">
-                        <div className="flex justify-between text-[9px] font-black text-text-muted uppercase tracking-widest">
-                            <span>Current: {progress?.bestWpm || 0}</span>
-                            <span>Target: 40</span>
-                        </div>
-                        <div className="h-2 w-full bg-bg-tertiary rounded-full overflow-hidden relative">
-                            <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${Math.min(100, ((progress?.bestWpm || 0) / 40) * 100)}%` }}
-                                className="h-full bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)] relative z-10"
-                            />
-                            {/* Target Marker */}
-                            <div className="absolute top-0 bottom-0 right-0 w-[2px] bg-white/20 z-0" />
-                        </div>
-                    </div>
-                </div>
+                                            return (
+                                                <button
+                                                    key={subLesson.id}
+                                                    onClick={() => isSubUnlocked && onSelectSubLesson(subLesson)}
+                                                    disabled={!isSubUnlocked}
+                                                    className={`
+                                                        p-2.5 rounded-xl border text-left transition-all relative overflow-hidden group
+                                                        ${isSubCompleted
+                                                            ? 'bg-green-500/5 border-green-500/20 hover:bg-green-500/10'
+                                                            : isSubUnlocked
+                                                                ? 'bg-bg-tertiary/20 border-border/50 hover:border-accent/40 hover:bg-bg-tertiary/40'
+                                                                : 'bg-bg-tertiary/10 border-border/10 opacity-50 cursor-not-allowed'
+                                                        }
+                                                    `}
+                                                >
+                                                    <div className="flex items-center justify-between mb-1.5">
+                                                        <div className="flex items-center gap-1.5 min-w-0">
+                                                            <span className={`
+                                                                text-[10px] font-black uppercase tracking-widest
+                                                                ${isSubCompleted ? 'text-green-400' : isSubUnlocked ? 'text-accent' : 'text-text-muted'}
+                                                            `}>
+                                                                {lessonIndex + 1}.{subIndex + 1}
+                                                            </span>
+                                                            {subLesson.type === 'practice' && (
+                                                                <span className="text-[8px] bg-accent/10 text-accent px-1.5 py-0.5 rounded-md font-black tracking-tighter uppercase whitespace-nowrap">
+                                                                    Practice
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        {isSubCompleted && (
+                                                            <span className="text-green-400 text-xs">✓</span>
+                                                        )}
+                                                    </div>
+                                                    <p className="text-xs font-bold text-text-primary mb-1 truncate">
+                                                        {subLesson.title}
+                                                    </p>
+                                                    <div className="flex items-center gap-2 text-[8px] text-text-muted font-black tracking-widest uppercase">
+                                                        <span>⏱ {subLesson.duration}s</span>
+                                                        {subLesson.minAccuracy && (
+                                                            <span className="text-accent/50">• 🎯 {subLesson.minAccuracy}%</span>
+                                                        )}
+                                                    </div>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                ) : (
+                                    <div className="p-4 bg-bg-tertiary/20 border border-dashed border-border rounded-xl text-center">
+                                        <p className="text-[10px] text-text-muted font-black uppercase tracking-widest opacity-40">
+                                            Coming Soon
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </div>
         </div>
     );

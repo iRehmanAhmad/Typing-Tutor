@@ -27,7 +27,7 @@ const GameCard = ({ title, description, icon, color, onClick, isLocked, tag }) =
             )}
         </div>
 
-        <h3 className="text-xl font-black italic uppercase tracking-tighter text-text-primary mb-2">
+        <h3 className="text-xl font-black uppercase tracking-tighter text-text-primary mb-2">
             {title}
         </h3>
         <p className="text-xs font-bold text-text-muted leading-relaxed mb-4">
@@ -35,11 +35,11 @@ const GameCard = ({ title, description, icon, color, onClick, isLocked, tag }) =
         </p>
 
         {/* Tactical Corner */}
-        <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-white/5 to-transparent -mr-8 -mt-8 rotate-45 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-text-primary/5 to-transparent -mr-8 -mt-8 rotate-45 pointer-events-none" />
 
         {/* Play Button Indicator */}
         <div className="mt-auto flex items-center gap-2 text-accent opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
-            <span className="text-[10px] font-black uppercase tracking-widest">Init Protocol</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">Play Game</span>
             <span>→</span>
         </div>
     </motion.button>
@@ -73,17 +73,17 @@ const GamesView = () => {
             <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12">
                 {mode === 'dashboard' ? (
                     <div className="text-center md:text-left space-y-2">
-                        <h1 className="text-4xl font-black italic text-text-primary tracking-tighter uppercase">
-                            Tactical Arcade
+                        <h1 className="text-4xl font-black text-text-primary tracking-tighter uppercase">
+                            Typing Games
                         </h1>
                         <p className="text-text-muted font-bold text-sm uppercase tracking-widest">
-                            High-Stakes Simulations // Competitive & Survival
+                            Fun Typing Exercises // Race & Survival
                         </p>
                     </div>
                 ) : (
                     <button onClick={handleBack} className="text-text-muted hover:text-accent transition-colors flex items-center gap-2">
                         <span className="text-xl">←</span>
-                        <span className="text-sm font-bold uppercase tracking-widest">Back to Arcade</span>
+                        <span className="text-sm font-bold uppercase tracking-widest">Back to Games</span>
                     </button>
                 )}
             </header>
@@ -94,7 +94,7 @@ const GamesView = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         <GameCard
                             title="Speed Circuit"
-                            description="Data Exfiltration Protocol. Race against elite counter-operatives to decrypt the payload before time runs out."
+                            description="Race against other keys to win the prize. Type fast to finish before time runs out."
                             icon="🏎️"
                             color="bg-orange-500/10 text-orange-500"
                             tag="PvE Race"
@@ -102,8 +102,8 @@ const GamesView = () => {
                         />
 
                         <GameCard
-                            title="Threat Neutralization"
-                            description="Mainframe Defense. Eliminate incoming threat vectors (words) before they breach the firewall."
+                            title="Word Defense"
+                            description="Protect your screen. Type the incoming words before they reach the bottom."
                             icon="🛡️"
                             color="bg-purple-500/10 text-purple-500"
                             tag="Survival"
@@ -113,7 +113,7 @@ const GamesView = () => {
 
                     {/* Coming Soon Section */}
                     <div className="max-w-4xl mx-auto pt-8 border-t border-border/30">
-                        <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-6 text-center">Classified Operations (Coming Soon)</h3>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-text-muted mb-6 text-center">New Games Coming Soon</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
                             <GameCard
                                 title="Code Breaker"

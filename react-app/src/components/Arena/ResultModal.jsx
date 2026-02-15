@@ -79,7 +79,7 @@ const ResultModal = ({ results, onRetry, onClose }) => {
             >
                 <div className="p-8 space-y-8">
                     <div className="text-center">
-                        <h2 className="text-4xl font-black mb-2 italic tracking-tighter text-text-primary">SESSION SUMMARY</h2>
+                        <h2 className="text-4xl font-black mb-2 tracking-tighter text-text-primary">SESSION SUMMARY</h2>
                         <div className="h-1 w-20 bg-accent mx-auto rounded-full"></div>
                     </div>
 

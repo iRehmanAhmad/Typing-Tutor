@@ -16,7 +16,7 @@ const CertificateGenerator = ({ username, date, courseName, wpm, accuracy, onClo
                 <div className="border-4 border-black p-8 text-center space-y-8">
                     <div className="space-y-2">
                         <span className="text-sm font-black tracking-[0.5em] uppercase text-gray-400">Tactical Typing Master</span>
-                        <h1 className="text-6xl font-black italic tracking-tighter uppercase leading-none">Certificate of Excellence</h1>
+                        <h1 className="text-6xl font-black tracking-tighter uppercase leading-none">Certificate of Excellence</h1>
                         <div className="h-1 w-24 bg-black mx-auto mt-4" />
                     </div>
 
@@ -32,7 +32,7 @@ const CertificateGenerator = ({ username, date, courseName, wpm, accuracy, onClo
                     <div className="grid grid-cols-3 gap-8 border-y-2 border-dashed border-gray-200 py-6">
                         <div>
                             <span className="text-xs font-bold uppercase text-gray-400 block mb-1">Course Logic</span>
-                            <h3 className="text-lg font-black italic uppercase leading-tight">{courseName}</h3>
+                            <h3 className="text-lg font-black uppercase leading-tight">{courseName}</h3>
                         </div>
                         <div>
                             <span className="text-xs font-bold uppercase text-gray-400 block mb-1">Final Velocity</span>

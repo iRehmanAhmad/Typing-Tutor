@@ -28,13 +28,13 @@ const VirtualKeyboard = ({ activeChar }) => {
     }, []);
 
     const getKeyType = (key) => {
-        if (key === 'Backspace') return 'w-[80px]';
-        if (key === 'Tab') return 'w-[60px]';
-        if (key === 'Caps') return 'w-[75px]';
-        if (key === 'Enter') return 'w-[85px]';
-        if (key === 'Shift') return 'w-[105px]';
-        if (key === 'Space') return 'flex-1 min-w-[300px]';
-        return 'w-12 h-12';
+        if (key === 'Backspace') return 'w-[70px]';
+        if (key === 'Tab') return 'w-[50px]';
+        if (key === 'Caps') return 'w-[65px]';
+        if (key === 'Enter') return 'w-[75px]';
+        if (key === 'Shift') return 'w-[90px]';
+        if (key === 'Space') return 'flex-1 min-w-[250px]';
+        return 'w-10 h-10';
     };
 
     const isHint = (key) => {
@@ -51,9 +51,9 @@ const VirtualKeyboard = ({ activeChar }) => {
     };
 
     return (
-        <div className="bg-bg-secondary p-6 rounded-3xl border border-border shadow-2xl flex flex-col gap-2 select-none">
+        <div className="bg-bg-secondary p-4 md:p-5 rounded-3xl border border-border shadow-2xl flex flex-col gap-1.5 select-none">
             {layout.map((row, ridx) => (
-                <div key={ridx} className="flex gap-2 justify-center">
+                <div key={ridx} className="flex gap-1.5 justify-center">
                     {row.map((key, kidx) => {
                         const active = pressedKey === key.toLowerCase() || (key === 'Space' && pressedKey === ' ');
                         const hint = isHint(key);
@@ -62,9 +62,9 @@ const VirtualKeyboard = ({ activeChar }) => {
                             <div
                                 key={kidx}
                                 className={`
-                                    ${getKeyType(key)} h-12 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-75
+                                    ${getKeyType(key)} h-10 rounded-lg flex items-center justify-center text-[10px] md:text-xs font-black transition-all duration-75
                                     ${active ? 'bg-accent text-white scale-95 shadow-inner' : 'bg-bg-tertiary text-text-muted border border-white/5'}
-                                    ${hint && !active ? 'border-accent text-accent shadow-[0_0_15px_rgba(99,102,241,0.3)] animate-pulse' : ''}
+                                    ${hint && !active ? 'border-accent text-accent shadow-[0_0_15px_rgba(var(--accent-rgb),0.3)] animate-pulse' : ''}
                                 `}
                             >
                                 {key === 'Space' ? '' : key}

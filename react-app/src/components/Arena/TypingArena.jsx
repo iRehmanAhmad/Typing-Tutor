@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, isFocusMode, currentWPM = 0 }) => {
+const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, isFocusMode, currentWPM = 0, isCompact = false }) => {
     const containerRef = useRef(null);
 
     // Heat Color Logic: Blue -> Green -> Gold
@@ -48,11 +48,12 @@ const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, is
         <div
             ref={containerRef}
             className={`
-                bg-bg-secondary backdrop-blur-xl border rounded-3xl p-10 relative font-mono text-3xl leading-relaxed select-none transition-all duration-700
+                bg-bg-secondary backdrop-blur-xl border rounded-3xl relative font-mono select-none transition-all duration-700
                 overflow-hidden flex flex-col
+                ${isCompact ? 'p-4 text-xl md:text-2xl leading-relaxed' : 'p-6 md:p-10 text-3xl leading-relaxed'}
                 ${getHeatColor()}
             `}
-            style={{ maxHeight: '600px' }}
+            style={{ maxHeight: isCompact ? '280px' : '600px' }}
         >
             {/* Heat Status Indicator */}
             <AnimatePresence>
@@ -61,17 +62,17 @@ const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, is
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -10 }}
-                        className="absolute top-4 left-6 flex items-center gap-2 z-20"
+                        className={`absolute flex items-center gap-2 z-20 ${isCompact ? 'top-2 left-4' : 'top-4 left-6'}`}
                     >
                         <span className={`w-1.5 h-1.5 rounded-full animate-ping ${currentWPM > 40 ? (currentWPM > 80 ? 'bg-accent' : 'bg-green-500') : 'bg-blue-500'}`} />
                         <span className={`text-[8px] font-black uppercase tracking-[0.3em] ${getHeatText()}`}>
-                            {currentWPM > 80 ? 'ELITE STREAK' : (currentWPM > 40 ? 'PERFORMANCE NOMINAL' : 'INITIALIZING STREAM')}
+                            {currentWPM > 80 ? 'FAST TYPING!' : (currentWPM > 40 ? 'KEEP GOING!' : 'READY...')}
                         </span>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            <div className="relative z-10 flex flex-wrap gap-y-4 content-start overflow-y-auto custom-scrollbar pr-4 pb-10 h-full">
+            <div className={`relative z-10 flex flex-wrap gap-y-2 md:gap-y-4 content-start overflow-y-auto custom-scrollbar pr-2 md:pr-4 h-full ${isCompact ? 'pb-4' : 'pb-10'}`}>
                 {words.map((word, wordIndex) => (
                     <div key={wordIndex} className="flex gap-x-[1px]">
                         {word.map(({ char, index }) => {
@@ -117,7 +118,7 @@ const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, is
                                                 <motion.div
                                                     initial={{ opacity: 0, y: 5 }}
                                                     animate={{ opacity: 1, y: 0 }}
-                                                    className="absolute -top-14 left-1/2 -translate-x-1/2 whitespace-nowrap bg-accent text-background px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-[0.1em] shadow-xl shadow-accent/40 z-[100]"
+                                                    className={`absolute left-1/2 -track-x-1/2 whitespace-nowrap bg-accent text-background px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-[0.1em] shadow-xl shadow-accent/40 z-[100] ${isCompact ? '-top-12' : '-top-14'}`}
                                                 >
                                                     TYPE HERE TO START
                                                     <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-accent rotate-45" />

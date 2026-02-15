@@ -10,7 +10,7 @@ const AdminHQ = ({ onBack }) => {
     const [activeModule, setActiveModule] = useState('overview');
     const [stats, setStats] = useState({
         wordsTyped: 0,
-        operatives: 0,
+        students: 0,
         certificates: 0,
         adClicks: 0
     });
@@ -18,11 +18,14 @@ const AdminHQ = ({ onBack }) => {
     const [platformConfig, setPlatformConfig] = useState({
         adUnits: [
             { id: 'top_banner', name: 'Test Arena Top', active: true, provider: 'Google Ads' },
-            { id: 'sidebar', name: 'Learning Sidebar', active: true, provider: 'Custom Partner' }
+            { id: 'sidebar', name: 'Learning Sidebar', active: true, provider: 'Custom Partner' },
+            { id: 'catalog_header', name: 'Catalog Leaderboard', active: true, provider: 'Google Ads' },
+            { id: 'catalog_grid', name: 'Catalog Grid Card', active: true, provider: 'Google Ads' },
+            { id: 'dashboard_skyscraper', name: 'Dashboard Sidebar', active: true, provider: 'Google Ads' }
         ],
         broadcast: {
-            alert: 'System Online: All sectors operational.',
-            tip: 'Tip: Use the anchor keys (F & J) to maintain tactical alignment.'
+            alert: 'System Online: All lessons operational.',
+            tip: 'Tip: Use the anchor keys (F & J) to keep your fingers in the right place.'
         }
     });
 
@@ -66,22 +69,22 @@ const AdminHQ = ({ onBack }) => {
     };
 
     const modules = [
-        { id: 'overview', name: 'Field Intel', icon: '📊' },
-        { id: 'cms', name: 'Mission CMS', icon: '📁' },
-        { id: 'ads', name: 'Intel Ops (Ads)', icon: '🛡️' },
-        { id: 'broadcast', name: 'Broadcast', icon: '📡' }
+        { id: 'overview', name: 'Overview', icon: '📊' },
+        { id: 'cms', name: 'Manage Lessons', icon: '📁' },
+        { id: 'ads', name: 'Manage Ads', icon: '🛡️' },
+        { id: 'broadcast', name: 'Global Messaging', icon: '📡' }
     ];
 
     return (
         <div className="min-h-screen bg-background p-8">
             <SEO
-                title="Command Center"
-                description="Administrative control panel for platform management and analytics."
+                title="Admin Dashboard"
+                description="Administrative control panel for managing lessons and students."
             />
             <div className="max-w-7xl mx-auto flex gap-6">
                 {/* Sidebar */}
                 <div className="w-64 bg-bg-secondary border border-border rounded-3xl p-6 flex flex-col gap-3 h-fit sticky top-8">
-                    <h2 className="text-xs font-black text-text-muted uppercase tracking-[0.3em] mb-2">Command Center</h2>
+                    <h2 className="text-xs font-black text-text-muted uppercase tracking-[0.3em] mb-2">Admin Panel</h2>
                     {modules.map(mod => (
                         <button
                             key={mod.id}
@@ -99,8 +102,8 @@ const AdminHQ = ({ onBack }) => {
                         </button>
                     ))}
 
-                    <div className="mt-auto p-4 bg-red-500/10 border border-red-500/20 rounded-2xl">
-                        <p className="text-[9px] font-black text-red-500 uppercase tracking-widest text-center">Threat Level: Minimal</p>
+                    <div className="mt-auto p-4 bg-green-500/10 border border-green-500/20 rounded-2xl">
+                        <p className="text-[9px] font-black text-green-500 uppercase tracking-widest text-center">System Status: Optimal</p>
                     </div>
                 </div>
 
@@ -121,9 +124,9 @@ const AdminHQ = ({ onBack }) => {
                                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                                     {[
                                         { label: 'Words Typed', val: recentLogs.reduce((acc, l) => acc + (l.chars || 0), 0) * 12, color: 'text-cyan-400' },
-                                        { label: 'Active Operatives', val: recentLogs.length * 3, color: 'text-purple-400' },
+                                        { label: 'Active Students', val: recentLogs.length * 3, color: 'text-purple-400' },
                                         { label: 'Certs Issued', val: Math.floor(recentLogs.length / 2), color: 'text-orange-400' },
-                                        { label: 'Ad Performance', val: platformConfig.adUnits.filter(u => u.active).length * 15, color: 'text-green-400' }
+                                        { label: 'Ad Savings', val: platformConfig.adUnits.filter(u => u.active).length * 15, color: 'text-green-400' }
                                     ].map((s, i) => (
                                         <div key={i} className="bg-bg-primary/50 p-6 rounded-2xl border border-border group hover:border-accent transition-all">
                                             <p className="text-[10px] font-black text-text-muted uppercase mb-2">{s.label}</p>
@@ -140,7 +143,7 @@ const AdminHQ = ({ onBack }) => {
                                                 <div className="flex items-center gap-3">
                                                     <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
                                                     <span className="font-bold text-text-primary uppercase">{log.name}</span>
-                                                    <span className="text-text-muted">intercepted {log.gameId === 'speed_circuit' ? 'Circuit' : 'Mainframe'}</span>
+                                                    <span className="text-text-muted">finished {log.gameId === 'speed_circuit' ? 'Speed Race' : 'Word Attack'} Session</span>
                                                 </div>
                                                 <div className="flex gap-4 font-black">
                                                     <span className="text-accent">{log.wpm || log.score} {log.wpm ? 'WPM' : 'PTS'}</span>
@@ -167,8 +170,8 @@ const AdminHQ = ({ onBack }) => {
                             >
                                 <div className="flex justify-between items-end">
                                     <div>
-                                        <h2 className="text-xl font-black uppercase text-text-primary">Intel Monetization</h2>
-                                        <p className="text-xs text-text-muted mt-1">Manage platform-wide ad units and sponsorships.</p>
+                                        <h2 className="text-xl font-black uppercase text-text-primary">Ad Settings</h2>
+                                        <p className="text-xs text-text-muted mt-1">Manage where and how advertisements appear on the site.</p>
                                     </div>
                                     <button className="px-4 py-2 rounded-lg bg-accent text-white font-bold text-[10px] uppercase tracking-widest">Connect Provider</button>
                                 </div>
@@ -205,7 +208,7 @@ const AdminHQ = ({ onBack }) => {
                                 animate={{ opacity: 1, x: 0 }}
                                 className="space-y-6"
                             >
-                                <h2 className="text-xl font-black uppercase text-text-primary">Broadcast Console</h2>
+                                <h2 className="text-xl font-black uppercase text-text-primary">Global Messaging</h2>
 
                                 <div className="space-y-4">
                                     <div className="bg-bg-primary/50 p-6 rounded-2xl border border-border space-y-4">
@@ -238,9 +241,9 @@ const AdminHQ = ({ onBack }) => {
                                 className="flex flex-col items-center justify-center h-full space-y-4"
                             >
                                 <div className="text-4xl">🗄️</div>
-                                <h3 className="font-black uppercase tracking-widest text-text-primary">Curriculum Database</h3>
-                                <p className="text-xs text-text-muted text-center max-w-sm">Connect your Supabase project using the credentials in .env to enable dynamic mission management.</p>
-                                <button className="mt-4 px-6 py-2 rounded-xl bg-purple-500 text-white font-black text-xs uppercase tracking-tighter shadow-lg shadow-purple-500/20">Sync with Mainframe</button>
+                                <h3 className="font-black uppercase tracking-widest text-text-primary">Course Database</h3>
+                                <p className="text-xs text-text-muted text-center max-w-sm">Connect your database to manage lessons and course structure.</p>
+                                <button className="mt-4 px-6 py-2 rounded-xl bg-purple-500 text-white font-black text-xs uppercase tracking-tighter shadow-lg shadow-purple-500/20">Sync with Server</button>
                             </motion.div>
                         )}
                     </AnimatePresence>

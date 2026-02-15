@@ -7,7 +7,7 @@ import VirtualKeyboard from '../Arena/VirtualKeyboard';
 import ResultModal from '../Arena/ResultModal';
 import { useProgress } from '../../context/ProgressContext';
 
-const LessonPlayer = ({ subLesson, onClose }) => {
+const LessonPlayer = ({ subLesson, onClose, isInline = false }) => {
     const { updateProgress } = useProgress();
 
     const onComplete = (results) => {
@@ -28,121 +28,157 @@ const LessonPlayer = ({ subLesson, onClose }) => {
     const isPractice = subLesson.type === 'practice';
     const engine = isPractice ? useTypingEngine(subLesson.text, subLesson.duration, onComplete) : null;
 
-    // Prevent background scroll when player is open
+    // Prevent background scroll only when player is NOT inline (i.e. modal mode)
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        return () => { document.body.style.overflow = 'auto'; };
-    }, []);
+        if (!isInline) {
+            document.body.style.overflow = 'hidden';
+            return () => { document.body.style.overflow = 'auto'; };
+        }
+    }, [isInline]);
 
     const content = (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="fixed inset-0 z-[99999] bg-background flex flex-col items-center p-8 overflow-y-auto"
-            style={{ backgroundColor: 'var(--bg-primary)' }} // Force solid background
-        >
-            <div className="w-full max-w-5xl">
-                <div className="flex justify-between items-center mb-12">
-                    <div>
-                        <span className="text-xs font-black text-accent uppercase tracking-[0.3em] mb-2 block animate-pulse">Tactical Session Active</span>
-                        <h2 className="text-4xl font-black tracking-tighter italic uppercase text-text-primary">{subLesson.title}</h2>
-                    </div>
-                    <button
-                        onClick={onClose}
-                        className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-accent/50 transition duration-300"
-                    >
-                        <span className="text-white text-xl">✕</span>
-                    </button>
-                </div>
+        <>
+            {/* Backdrop Blur - Only for Modal Mode */}
+            {!isInline && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[99998] bg-black/60 backdrop-blur-md"
+                    onClick={onClose}
+                />
+            )}
 
-                {isPractice ? (
-                    <div className="space-y-8 animate-in slide-in-from-bottom duration-500">
-                        <div className="flex justify-center gap-1">
-                            <div className="bg-bg-secondary p-1 rounded-[32px] border border-border shadow-2xl flex items-center gap-1 backdrop-blur-xl">
-                                <div className="flex bg-bg-primary rounded-[28px] p-6 gap-12 min-w-[500px] border border-border/50">
-                                    <Metric label="TIME LEFT" value={engine.timeLeft} unit="S" accent="text-accent" />
-                                    <div className="w-[1px] h-10 bg-border self-center" />
-                                    <Metric label="SPEED" value={engine.currentWPM} unit="WPM" accent="text-text-primary" />
-                                    <div className="w-[1px] h-10 bg-border self-center" />
-                                    <Metric label="ACCURACY" value={engine.typedChars ? Math.round((engine.correctChars / engine.typedChars) * 100) : 100} unit="%" accent="text-green-500" />
-                                </div>
+            <motion.div
+                initial={isInline ? { opacity: 0, y: 10 } : { opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={isInline ? { opacity: 0, y: 10 } : { opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                className={isInline
+                    ? "w-full flex flex-col items-center"
+                    : "fixed inset-0 z-[99999] flex flex-col items-center p-4 md:p-8 overflow-y-auto"
+                }
+                onClick={(e) => !isInline && e.stopPropagation()}
+            >
+                <div className={`w-full ${isInline ? "" : "max-w-5xl"} bg-bg-primary/95 backdrop-blur-xl rounded-3xl border border-border/50 shadow-2xl ${isInline ? "p-3 md:p-4" : "p-6 md:p-8"}`}>
+                    {/* Consolidated HUD - Unified Header & Metrics */}
+                    <div className={`flex items-center gap-4 ${isInline ? "mb-4" : "mb-8"}`}>
+                        <div className="flex-1 min-w-0 flex flex-col justify-center">
+                            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                                <span className="text-[8px] font-black text-accent uppercase tracking-[0.2em] flex items-center gap-1">
+                                    <span className="w-1 h-1 bg-accent rounded-full animate-pulse" />
+                                    Now Learning
+                                </span>
+                                {isPractice && (
+                                    <div className="text-[7px] font-black text-text-muted uppercase tracking-widest bg-bg-secondary px-1.5 py-0.5 rounded border border-border">
+                                        Practice
+                                    </div>
+                                )}
                             </div>
+                            <h2 className={`${isInline ? "text-lg" : "text-3xl md:text-4xl"} font-black tracking-tighter uppercase text-text-primary leading-none truncate`}>
+                                {subLesson.title}
+                            </h2>
                         </div>
 
-                        <TypingArena
-                            text={subLesson.text}
-                            currentIndex={engine.currentIndex}
-                            accuracyMap={engine.accuracyMap}
-                            handleKey={engine.handleKey}
-                            isRunning={engine.isRunning}
-                            isFocusMode={engine.isRunning && engine.currentIndex > 0}
-                        />
-
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <div className="lg:col-span-2">
-                                <VirtualKeyboard activeChar={subLesson.text[engine.currentIndex]} />
+                        {/* Metrics HUD Inlined */}
+                        {isPractice && (
+                            <div className={`flex items-center ${isInline ? "bg-bg-secondary/50 border border-border/30 rounded-xl px-4 py-1.5 gap-6" : "gap-12"} flex-shrink-0`}>
+                                <Metric label="TIME" value={engine.timeLeft} unit="S" accent="text-accent" isCompact={isInline} />
+                                <Metric label="SPEED" value={engine.currentWPM} unit="WPM" accent="text-text-primary" isCompact={isInline} />
+                                <Metric label="ACCURACY" value={engine.typedChars ? Math.round((engine.correctChars / engine.typedChars) * 100) : 100} unit="%" accent="text-green-500" isCompact={isInline} />
                             </div>
-                            <div className="bg-bg-secondary p-8 rounded-[40px] border border-border text-center shadow-2xl relative overflow-hidden flex flex-col justify-center">
-                                <div className="absolute inset-0 bg-accent/5 pointer-events-none" />
-                                <h4 className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-4">Mastery Mission</h4>
-                                <p className="text-lg font-bold text-text-primary mb-2 leading-tight">{subLesson.tutorialText}</p>
-                                <div className="mt-4 pt-4 border-t border-border">
-                                    <p className="text-[10px] text-accent font-black uppercase tracking-widest">Goal: {subLesson.minAccuracy}% Accuracy Required</p>
-                                </div>
-                            </div>
-                        </div>
+                        )}
 
-                        <ResultModal
-                            results={engine.results}
-                            onRetry={engine.reset}
-                            onClose={onClose}
-                        />
-                    </div>
-                ) : subLesson.type === 'completion_final' ? (
-                    <div className="flex flex-col items-center justify-center min-h-[500px] text-center space-y-8 animate-in zoom-in duration-1000">
-                        <div className="relative">
-                            <span className="text-9xl">🎓</span>
-                            <div className="absolute inset-0 bg-accent/20 blur-[100px] -z-10" />
-                        </div>
-                        <div>
-                            <h2 className="text-6xl font-black italic tracking-tighter uppercase mb-4 text-white">Course Mastered</h2>
-                            <p className="text-xl text-text-muted max-w-lg mx-auto leading-relaxed">You have successfully decrypted the Basic Typing Course secrets. Your tactical expertise is now certified.</p>
-                        </div>
-                        <button
-                            onClick={() => onComplete({ accuracy: 100, netWPM: 0, mistakes: {} })}
-                            className="px-12 py-6 bg-white text-black font-black rounded-3xl hover:bg-gray-200 transition scale-110 shadow-[0_20px_60px_rgba(255,255,255,0.2)] active:scale-105"
-                        >
-                            CLAIM GRADUATION CERTIFICATE
-                        </button>
-                    </div>
-                ) : (
-                    <div className="bg-bg-secondary p-12 rounded-[40px] border border-border shadow-2xl animate-in fade-in slide-in-from-bottom duration-700">
-                        <div
-                            className="prose prose-invert prose-p:text-text-muted prose-p:text-lg prose-p:leading-relaxed prose-h2:text-4xl prose-h2:font-black prose-h2:italic prose-h2:tracking-tighter prose-h2:uppercase prose-h2:mb-8 prose-li:text-text-secondary max-w-none"
-                            dangerouslySetInnerHTML={{ __html: subLesson.content }}
-                        />
                         <button
                             onClick={onClose}
-                            className="mt-12 w-full sm:w-auto px-16 py-5 bg-accent text-background font-black rounded-2xl hover:bg-accent/80 transition active:scale-95 shadow-[0_10px_30px_rgba(var(--accent-rgb),0.3)]"
+                            className={`${isInline ? "p-2 px-3 text-[9px]" : "p-3 rounded-xl text-xs"} rounded-lg border border-border bg-bg-secondary font-black uppercase tracking-widest hover:bg-bg-tertiary transition-all flex items-center gap-2 group relative overflow-hidden shadow-lg h-fit flex-shrink-0`}
                         >
-                            ACKNOWLEDGE & COMPLETE
+                            <div className="absolute inset-0 bg-red-500/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
+                            <span className="group-hover:-translate-x-1 transition-transform relative z-10">←</span>
+                            <span className="relative z-10">{isInline ? "Exit" : "Leave"}</span>
                         </button>
                     </div>
-                )}
-            </div>
-        </motion.div>
+
+                    {isPractice ? (
+                        <div className={`${isInline ? "space-y-4" : "space-y-8"} animate-in slide-in-from-bottom duration-500`}>
+                            {/* Previous Metrics Row Removed */}
+
+                            <TypingArena
+                                text={subLesson.text}
+                                currentIndex={engine.currentIndex}
+                                accuracyMap={engine.accuracyMap}
+                                handleKey={engine.handleKey}
+                                isRunning={engine.isRunning}
+                                isFocusMode={engine.isRunning && engine.currentIndex > 0}
+                                isCompact={isInline}
+                            />
+
+                            <div className={`grid grid-cols-1 ${isInline ? "" : "lg:grid-cols-3"} gap-4`}>
+                                <div className={isInline ? "" : "lg:col-span-2"}>
+                                    <VirtualKeyboard activeChar={subLesson.text[engine.currentIndex]} />
+                                </div>
+                                <div className={`bg-bg-secondary ${isInline ? "p-4 py-3" : "p-8"} rounded-2xl border border-border text-center shadow-xl relative overflow-hidden flex flex-col justify-center`}>
+                                    <div className="absolute inset-0 bg-accent/5 pointer-events-none" />
+                                    <h4 className="text-[8px] font-black text-text-muted uppercase tracking-[0.2em] mb-2 font-black">Goal</h4>
+                                    <p className={`${isInline ? "text-sm" : "text-lg"} font-bold text-text-primary mb-1 leading-tight`}>{subLesson.tutorialText}</p>
+                                    <div className={`${isInline ? "mt-2 pt-2" : "mt-4 pt-4"} border-t border-border/30`}>
+                                        <p className="text-[8px] text-accent font-black uppercase tracking-widest">Goal: {subLesson.minAccuracy}% Accuracy</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ResultModal
+                                results={engine.results}
+                                onRetry={engine.reset}
+                                onClose={onClose}
+                            />
+                        </div>
+                    ) : subLesson.type === 'completion_final' ? (
+                        <div className="flex flex-col items-center justify-center min-h-[400px] text-center space-y-6 animate-in zoom-in duration-1000">
+                            <div className="relative">
+                                <span className={`${isInline ? "text-7xl" : "text-9xl"}`}>🎓</span>
+                                <div className="absolute inset-0 bg-accent/20 blur-[100px] -z-10" />
+                            </div>
+                            <div>
+                                <h2 className={`${isInline ? "text-3xl" : "text-6xl"} font-black tracking-tighter uppercase mb-2 text-white`}>Course Completed!</h2>
+                                <p className={`${isInline ? "text-sm" : "text-xl"} text-text-muted max-w-lg mx-auto leading-relaxed`}>Excellent work! You have finished this course.</p>
+                            </div>
+                            <button
+                                onClick={() => onComplete({ accuracy: 100, netWPM: 0, mistakes: {} })}
+                                className={`${isInline ? "px-8 py-3" : "px-12 py-6 scale-110"} bg-white text-black font-black rounded-2xl hover:bg-gray-200 transition shadow-[0_20px_60px_rgba(255,255,255,0.1)] active:scale-95`}
+                            >
+                                CLAIM CERTIFICATE
+                            </button>
+                        </div>
+                    ) : (
+                        <div className={`${isInline ? "p-5" : "p-8 md:p-12"} bg-bg-secondary rounded-2xl border border-border shadow-2xl animate-in fade-in slide-in-from-bottom duration-700 text-left`}>
+                            <div
+                                className={`prose prose-invert prose-p:text-text-muted ${isInline ? "prose-p:text-sm prose-h2:text-2xl prose-h2:mb-4" : "prose-p:text-lg prose-h2:text-4xl prose-h2:mb-8"} prose-p:leading-relaxed prose-h2:font-black prose-h2:tracking-tighter prose-h2:uppercase prose-li:text-text-secondary max-w-none`}
+                                dangerouslySetInnerHTML={{ __html: subLesson.content }}
+                            />
+                            <button
+                                onClick={onClose}
+                                className={`mt-8 w-full sm:w-auto ${isInline ? "px-10 py-3 text-xs" : "px-16 py-5"} bg-gradient-to-r from-accent to-purple-600 text-white font-black rounded-xl hover:scale-[1.02] active:scale-95 transition-all shadow-lg relative overflow-hidden group`}
+                            >
+                                <span className="relative z-10 uppercase tracking-widest font-black">Finish Lesson</span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </motion.div>
+        </>
     );
 
-    return createPortal(content, document.body);
+    return isInline ? content : createPortal(content, document.body);
 };
 
-const Metric = ({ label, value, unit, accent = "text-text-primary" }) => (
+const Metric = ({ label, value, unit, accent = "text-text-primary", isCompact = false }) => (
     <div className="text-center flex-1">
-        <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.2em] mb-2">{label}</p>
-        <p className={`text-5xl font-black italic tracking-tighter ${accent}`}>
+        <p className={`${isCompact ? "text-[8px]" : "text-[10px]"} font-black text-text-muted uppercase tracking-[0.2em] mb-1 font-black`}>{label}</p>
+        <p className={`${isCompact ? "text-2xl" : "text-5xl"} font-black tracking-tighter ${accent}`}>
             {value}
-            <small className="text-base not-italic opacity-40 ml-2 font-bold uppercase tracking-widest">{unit}</small>
+            <small className={`${isCompact ? "text-[10px]" : "text-base"} opacity-40 ml-1 font-bold uppercase tracking-widest`}>{unit}</small>
         </p>
     </div>
 );

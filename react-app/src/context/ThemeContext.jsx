@@ -5,11 +5,11 @@ const ThemeContext = createContext();
 export const useTheme = () => useContext(ThemeContext);
 
 export const themes = [
-    { id: 'indigo-flux', name: 'Indigo Flux', primary: '#818CF8', bg: '#0F172A' },
-    { id: 'cyber-tactical', name: 'Cyber Tactical', primary: '#4ADE80', bg: '#0B0F19' },
-    { id: 'black-ops', name: 'Black Ops', primary: '#EF4444', bg: '#0A0A0A' },
-    { id: 'elite-command', name: 'Elite Command', primary: '#F59E0B', bg: '#121212' },
-    { id: 'w3-classic', name: 'W3 Classic', primary: '#04AA6D', bg: '#FFFFFF' }
+    { id: 'indigo-flux', name: 'Ocean Blue (Default)', primary: '#818CF8', bg: '#0F172A' },
+    { id: 'cyber-tactical', name: 'Emerald Green', primary: '#4ADE80', bg: '#0B0F19' },
+    { id: 'black-ops', name: 'Midnight Red', primary: '#EF4444', bg: '#0A0A0A' },
+    { id: 'elite-command', name: 'Classic Gold', primary: '#F59E0B', bg: '#121212' },
+    { id: 'w3-classic', name: 'Standard Light', primary: '#04AA6D', bg: '#FFFFFF' }
 ];
 
 export const ThemeProvider = ({ children }) => {
@@ -19,10 +19,12 @@ export const ThemeProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem('tactical-theme', currentTheme);
-        // Remove all theme classes
-        document.body.classList.remove(...themes.map(t => `theme-${t.id}`));
+        // Remove all potential theme classes
+        const allThemeClasses = themes.map(t => `theme-${t.id}`);
+        document.documentElement.classList.remove(...allThemeClasses);
+        document.documentElement.classList.remove('theme-default');
         // Add current theme class
-        document.body.classList.add(`theme-${currentTheme}`);
+        document.documentElement.classList.add(`theme-${currentTheme}`);
     }, [currentTheme]);
 
     return (

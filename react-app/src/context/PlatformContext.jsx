@@ -10,7 +10,10 @@ export const PlatformProvider = ({ children }) => {
     const [config, setConfig] = useState({
         adUnits: [
             { id: 'top_banner', name: 'Test Arena Top', active: true, provider: 'Google Ads' },
-            { id: 'sidebar', name: 'Learning Sidebar', active: true, provider: 'Custom Partner' }
+            { id: 'sidebar', name: 'Learning Sidebar', active: true, provider: 'Custom Partner' },
+            { id: 'catalog_header', name: 'Catalog Leaderboard', active: true, provider: 'Google Ads' },
+            { id: 'catalog_grid', name: 'Catalog Grid Card', active: true, provider: 'Google Ads' },
+            { id: 'dashboard_skyscraper', name: 'Dashboard Sidebar', active: true, provider: 'Google Ads' }
         ],
         broadcast: {
             alert: 'System Online: All sectors operational.',
@@ -21,12 +24,20 @@ export const PlatformProvider = ({ children }) => {
 
     useEffect(() => {
         const configRef = doc(db, 'config', 'platform');
-        const unsub = onSnapshot(configRef, (snap) => {
-            if (snap.exists()) {
-                setConfig(snap.data());
+        const unsub = onSnapshot(
+            configRef,
+            (snap) => {
+                if (snap.exists()) {
+                    setConfig(snap.data());
+                }
+                setLoading(false);
+            },
+            (error) => {
+                // Silently handle permission errors - use default config
+                console.log('Using default platform config (Firebase permissions not configured)');
+                setLoading(false);
             }
-            setLoading(false);
-        });
+        );
 
         return () => unsub();
     }, []);

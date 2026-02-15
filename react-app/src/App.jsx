@@ -1,7 +1,7 @@
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ProgressProvider, useProgress } from './context/ProgressContext';
 import { TabProvider, useTabs } from './context/TabContext';
-import { ThemeProvider } from './context/ThemeContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { PlatformProvider } from './context/PlatformContext';
 import { HelmetProvider } from 'react-helmet-async';
 import React, { Suspense, lazy } from 'react';
@@ -21,12 +21,13 @@ const AdminHQ = lazy(() => import('./components/Admin/AdminHQ'));
 const LoadingScreen = () => (
   <div className="h-full w-full flex flex-col items-center justify-center space-y-4 min-h-[60vh]">
     <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-    <p className="text-xs font-black text-text-muted uppercase tracking-[0.3em] animate-pulse">Initializing Module...</p>
+    <p className="text-xs font-black text-text-muted uppercase tracking-[0.3em] animate-pulse">Loading...</p>
   </div>
 );
 
 const AppContent = () => {
   const { activeTab } = useTabs();
+  const { currentTheme } = useTheme();
   const { loading: authLoading } = useAuth();
   const { loading: progressLoading } = useProgress();
 
@@ -40,16 +41,16 @@ const AppContent = () => {
 
   if (authLoading || progressLoading) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
+      <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
         <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-black text-text-muted uppercase tracking-[0.3em] animate-pulse">Initializing Tactical Mastery...</p>
+        <p className="text-xs font-black text-text-muted uppercase tracking-[0.3em] animate-pulse">Loading Typing Master...</p>
       </div>
     );
   }
 
   return (
     <HelmetProvider>
-      <div className="min-h-screen bg-background text-text-primary font-sans selection:bg-accent/20 selection:text-accent">
+      <div className="min-h-screen text-text-primary font-sans selection:bg-accent/20 selection:text-accent transition-colors duration-500">
         <Navbar />
         <main className="container mx-auto px-4 py-8">
           <Suspense fallback={<LoadingScreen />}>

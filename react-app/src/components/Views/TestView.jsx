@@ -13,9 +13,9 @@ import SEO from '../Layout/SEO';
 const Metric = ({ label, value, unit, accent = "text-text-primary", cluster, compact }) => (
     <div className={`flex flex-col items-center justify-center ${cluster ? (compact ? 'min-w-[50px]' : 'min-w-[80px]') : 'text-right'}`}>
         <p className={`font-black text-text-muted uppercase tracking-widest leading-none ${compact ? 'text-[7px] mb-1' : 'text-[10px] mb-1.5'}`}>{label}</p>
-        <p className={`font-black italic tracking-tighter leading-none ${accent} ${compact ? 'text-xl' : 'text-4xl'}`}>
+        <p className={`font-black tracking-tighter leading-none ${accent} ${compact ? 'text-xl' : 'text-4xl'}`}>
             {value}
-            <small className={`not-italic opacity-40 ml-0.5 uppercase ${compact ? 'text-[8px]' : 'text-xs'}`}>{unit}</small>
+            <small className={`opacity-40 ml-0.5 uppercase ${compact ? 'text-[8px]' : 'text-xs'}`}>{unit}</small>
         </p>
     </div>
 );
@@ -31,7 +31,7 @@ const AdUnit = ({ type = "leaderboard", className = "" }) => (
                 Google Ads Placement 728x90
             </div>
             <div className="relative z-10 flex flex-col items-center gap-1">
-                <div className="text-[9px] font-black border border-accent/20 px-3 py-1 rounded text-accent bg-accent/5 tracking-tighter italic">
+                <div className="text-[9px] font-black border border-accent/20 px-3 py-1 rounded text-accent bg-accent/5 tracking-tighter">
                     PREMIUM DATA STREAM ADVERTISING
                 </div>
                 <div className="text-[7px] font-black text-text-muted uppercase tracking-[0.2em] opacity-40">
@@ -133,8 +133,8 @@ const TestView = () => {
     return (
         <div className="relative max-w-6xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-700 pb-10">
             <SEO
-                title="Test Arena | Global Competition"
-                description="Compete in real-time typing challenges. Rank on global leaderboards and test your WPM against operatives worldwide."
+                title="Speed Test | How fast do you type?"
+                description="Test your typing speed and see how you rank against other students worldwide."
             />
             <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
             {isAdActive('top_banner') && (
@@ -142,11 +142,11 @@ const TestView = () => {
             )}
             <div className={`relative z-10 transition-all duration-700 flex flex-col md:flex-row items-center gap-4 bg-bg-secondary/50 p-2 rounded-3xl border border-border backdrop-blur-xl ${isActive ? 'opacity-10 blur-md scale-95' : 'opacity-100'}`}>
                 <div className="flex items-center gap-4 flex-1 w-full md:w-auto px-2">
-                    <h2 className="text-xl font-black tracking-tighter italic text-text-primary border-r border-border pr-4 hidden lg:block">COMPETITION <span className="text-accent">ARENA</span></h2>
+                    <h2 className="text-xl font-black tracking-tighter text-text-primary border-r border-border pr-4 hidden lg:block">SPEED <span className="text-accent">TEST</span></h2>
                     {!user && (
                         <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-accent/5 border border-accent/20 rounded-lg animate-pulse">
-                            <span className="text-xs">💡</span>
-                            <button onClick={login} className="text-[8px] font-black uppercase tracking-widest text-accent hover:underline">Identify (Login)</button>
+                            <span className="text-xs">👋</span>
+                            <button onClick={login} className="text-[8px] font-black uppercase tracking-widest text-accent hover:underline">Log In</button>
                         </div>
                     )}
                 </div>
@@ -164,8 +164,7 @@ const TestView = () => {
             <div className={`relative z-10 transition-all duration-700 flex flex-col items-center justify-center gap-3 px-4 py-4 bg-bg-primary/30 rounded-2xl border border-border/50 ${isActive ? 'opacity-0 h-0 overflow-hidden -mt-4' : 'opacity-100'}`}>
                 <div className="flex items-center gap-3">
                     <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_8px_#eab308]" />
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">Target Objective:</p>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-text-secondary select-none">Choose Your Proficiency Mode</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted">Select Difficulty:</p>
                 </div>
                 <div className="flex gap-2">
                     {['easy', 'normal', 'difficult'].map(mode => (
@@ -179,7 +178,7 @@ const TestView = () => {
                     {isActive && (
                         <motion.button initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} onClick={reset} className="absolute -right-4 -top-4 w-14 h-14 bg-red-600 text-white rounded-2xl shadow-[0_10px_30px_rgba(220,38,38,0.4)] flex flex-col items-center justify-center border-2 border-white/20 hover:scale-110 active:scale-95 transition-transform z-50 group">
                             <span className="font-black text-xl leading-none">✕</span>
-                            <span className="text-[7px] font-black uppercase tracking-tighter mt-1 opacity-60 group-hover:opacity-100 italic">QUIT</span>
+                            <span className="text-[7px] font-black uppercase tracking-tighter mt-1 opacity-60 group-hover:opacity-100">STOP</span>
                         </motion.button>
                     )}
                 </AnimatePresence>
@@ -191,7 +190,7 @@ const TestView = () => {
                         LIVE RANKINGS
                         <span className="w-12 h-[1px] bg-gradient-to-l from-transparent to-border" />
                     </h3>
-                    <button onClick={reset} className="text-[8px] font-black text-accent/40 uppercase tracking-[0.2em] hover:text-accent hover:underline transition-all">Synchronize / Reset Arena (ESC)</button>
+                    <button onClick={reset} className="text-[8px] font-black text-accent/40 uppercase tracking-[0.2em] hover:text-accent hover:underline transition-all">Restart Speed Test (ESC)</button>
                 </div>
                 {isAdActive('content') && (
                     <AdUnit className="bg-accent/[0.02] border-accent/5" />

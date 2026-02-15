@@ -12,14 +12,14 @@ const TacticalSwitcher = () => {
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition"
+                className="flex items-center gap-2 px-3 py-2 bg-text-primary/10 border border-text-primary/10 rounded-xl hover:bg-text-primary/20 transition"
                 title="Tactical Switcher"
             >
                 <div
                     className="w-3 h-3 rounded-full shadow-[0_0_8px_rgba(255,255,255,0.3)]"
                     style={{ backgroundColor: activeThemeData?.primary || '#818CF8' }}
                 />
-                <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Tactical Theme</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-text-muted">Appearance</span>
             </button>
 
             <AnimatePresence>
@@ -33,10 +33,10 @@ const TacticalSwitcher = () => {
                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                            className="absolute right-0 mt-2 w-56 bg-bg-secondary border border-border rounded-2xl shadow-2xl p-2 z-[70] backdrop-blur-xl"
+                            className="absolute right-0 mt-2 w-56 bg-bg-tertiary border border-border rounded-2xl shadow-2xl p-2 z-[70]"
                         >
                             <div className="px-3 py-2 border-b border-border mb-2">
-                                <p className="text-[10px] font-black text-text-muted uppercase tracking-tighter leading-none">Select Profile</p>
+                                <p className="text-[10px] font-black text-text-muted uppercase tracking-tighter leading-none">Choose Theme</p>
                             </div>
                             <div className="space-y-1">
                                 {themes.map((theme) => (
@@ -48,7 +48,7 @@ const TacticalSwitcher = () => {
                                         }}
                                         className={`
                                             w-full flex items-center justify-between px-3 py-2 rounded-xl transition-all
-                                            ${currentTheme === theme.id ? 'bg-white/10 border border-white/5' : 'hover:bg-white/5'}
+                                            ${currentTheme === theme.id ? 'bg-text-primary/10 border border-text-primary/5' : 'hover:bg-text-primary/5'}
                                         `}
                                     >
                                         <div className="flex items-center gap-3">
