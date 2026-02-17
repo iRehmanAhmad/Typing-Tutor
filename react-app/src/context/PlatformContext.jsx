@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { db } from '../config/firebase';
+import { db } from '../lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
 const PlatformContext = createContext();

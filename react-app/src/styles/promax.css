@@ -1,0 +1,69 @@
+:root {
+    /* Pro Max Color Palette - Emerald & Slate */
+    --pm-primary: #10b981;
+    --pm-primary-hover: #059669;
+    --pm-bg-site: #f8fafc;
+    --pm-bg-surface: rgba(255, 255, 255, 0.85);
+    --pm-text-main: #0f172a;
+    --pm-text-muted: #64748b;
+    --pm-border: rgba(226, 232, 240, 0.8);
+
+    /* Pro Max Effects */
+    --pm-blur: blur(12px);
+    --pm-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --pm-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --pm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+
+    /* Transitions */
+    --pm-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Glassmorphism Utilities */
+.glass-effect {
+    background: var(--pm-bg-surface);
+    backdrop-filter: var(--pm-blur);
+    -webkit-backdrop-filter: var(--pm-blur);
+    border: 1px solid var(--pm-border);
+}
+
+.pm-card {
+    background: white;
+    border: 1px solid var(--pm-border);
+    border-radius: 16px;
+    box-shadow: var(--pm-shadow-sm);
+    transition: var(--pm-transition);
+}
+
+.pm-card:hover {
+    box-shadow: var(--pm-shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--pm-primary);
+}
+
+.pm-button-primary {
+    background: var(--pm-primary);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: var(--pm-transition);
+    box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
+}
+
+.pm-button-primary:hover {
+    background: var(--pm-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px 0 rgba(16, 185, 129, 0.4);
+}
+
+/* Immersive Typography */
+.pm-heading {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.025em;
+    font-weight: 800;
+    color: var(--pm-text-main);
+}
+
+.pm-mono {
+    font-family: 'JetBrains Mono', monospace;
+}

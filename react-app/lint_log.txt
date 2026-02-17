@@ -1,0 +1,306 @@
+
+> react-app@0.0.0 lint
+> eslint .
+
+
+C:\Users\rehma\Desktop\typing-master\react-app\generate-icons.js
+  4:7  error  'createIcon' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\App.jsx
+  29:11  error  'currentTheme' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\context\AuthContext.jsx
+  7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\context\PlatformContext.jsx
+   7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  35:14  error  'error' is defined but never used                                                                                               no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\context\ProgressContext.jsx
+   4:15  error  'getDoc' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no-unused-vars
+   8:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-refresh/only-export-components
+  24:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  22 |     useEffect(() => {
+  23 |         if (!user) {
+> 24 |             setProgress({
+     |             ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  25 |                 xp: 0,
+  26 |                 streak: 0,
+  27 |                 completedSubLessons: [],  react-hooks/set-state-in-effect
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\context\TabContext.jsx
+  5:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\context\ThemeContext.jsx
+  5:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  7:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\admin\AdminHQ.jsx
+    2:10  error    'useAuth' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                     no-unused-vars
+    3:10  error    'usePlatform' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                 no-unused-vars
+    4:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                      no-unused-vars
+    7:58  error    'getDocs' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                     no-unused-vars
+    9:20  error    'onBack' is defined but never used                                                                                 no-unused-vars
+   11:12  error    'stats' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                              no-unused-vars
+   11:19  error    'setStats' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                           no-unused-vars
+   56:8   warning  React Hook useEffect has a missing dependency: 'platformConfig'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  141:63  error    'i' is defined but never used                                                                                      no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\arena\CompetitionTables.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\arena\ResultModal.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\arena\TypingArena.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\course\CertificateGenerator.jsx
+   2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             no-unused-vars
+  58:74  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  56 |                         <div className="text-right">
+  57 |                             <p className="text-xs font-bold uppercase text-gray-400">Verification ID</p>
+> 58 |                             <p className="font-mono text-xs font-black">{Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+     |                                                                          ^^^^^^^^^^^^^ Cannot call impure function
+  59 |                         </div>
+  60 |                     </div>
+  61 |                 </div>  react-hooks/purity
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\course\CourseCatalog.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\course\CourseDashboard.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  5:36  error  'onSelectLesson' is defined but never used                                     no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\course\CourseSidebar.jsx
+  37:46  error  'idx' is defined but never used  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\course\IdentityModal.jsx
+   2:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             no-unused-vars
+   6:34  error    'onClose' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       no-unused-vars
+  20:21  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  18 |                 const savedName = localStorage.getItem('guest_name');
+  19 |                 if (savedName) {
+> 20 |                     setNameInput(savedName);
+     |                     ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  21 |                     setStep('confirm'); // Case 2: Returning Guest
+  22 |                 } else {
+  23 |                     setStep('input'); // Case 1: First-time User  react-hooks/set-state-in-effect
+  27:8   warning  React Hook useEffect has a missing dependency: 'onComplete'. Either include it or remove the dependency array. If 'onComplete' changes too often, find the parent component that defines it and wrap that definition in useCallback                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/exhaustive-deps
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\course\LessonPlayer.jsx
+   3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                       no-unused-vars
+  29:33  error  React Hook "useTypingEngine" is called conditionally. React Hooks must be called in the exact same order in every component render  react-hooks/rules-of-hooks
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\dashboard\BroadcastBanner.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\games\SpeedCircuit.jsx
+    2:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                  no-unused-vars
+   25:12  error    'playerFinished' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                 no-unused-vars
+   37:9   error    'currInput' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                      no-unused-vars
+   42:9   error    'isRunning' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                      no-unused-vars
+   45:14  error    'engineWPM' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                      no-unused-vars
+  110:8   warning  React Hook useEffect has a missing dependency: 'finishRace'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\features\games\ThreatNeutralization.jsx
+    2:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no-unused-vars
+   20:20  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  18 |         id: i,
+  19 |         angle: (i / 12) * Math.PI * 2,
+> 20 |         dist: 40 + Math.random() * 40,
+     |                    ^^^^^^^^^^^^^ Cannot call impure function
+  21 |         size: 2 + Math.random() * 4
+  22 |     })), []);
+  23 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/purity
+   21:19  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  19 |         angle: (i / 12) * Math.PI * 2,
+  20 |         dist: 40 + Math.random() * 40,
+> 21 |         size: 2 + Math.random() * 4
+     |                   ^^^^^^^^^^^^^ Cannot call impure function
+  22 |     })), []);
+  23 |
+  24 |     return (                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/purity
+   57:12  error    'waveAnimation' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   no-unused-vars
+   99:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+   97 |         const nextWaveScore = wave * 1500;
+   98 |         if (score >= nextWaveScore) {
+>  99 |             setWave(w => w + 1);
+      |             ^^^^^^^ Avoid calling setState() directly within an effect
+  100 |             setWaveAnimation(true);
+  101 |             setTimeout(() => setWaveAnimation(false), 2000);
+  102 |         }  react-hooks/set-state-in-effect
+  108:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  106 |     useEffect(() => {
+  107 |         if (input && !activeWords.some(w => w.word.startsWith(input))) {
+> 108 |             setInput('');
+      |             ^^^^^^^^ Avoid calling setState() directly within an effect
+  109 |         }
+  110 |     }, [activeWords, input]);
+  111 |                                                             react-hooks/set-state-in-effect
+  213:8   warning  React Hook useEffect has missing dependencies: 'submitResult', 'user?.displayName', 'user?.uid', and 'wave'. Either include them or remove the dependency array. You can also replace multiple useState variables with useReducer if 'setShields' needs the current value of 'wave'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react-hooks/exhaustive-deps
+  246:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  244 |     useEffect(() => {
+  245 |         if (score > highScore) {
+> 246 |             setHighScore(score);
+      |             ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  247 |             localStorage.setItem('threat_high_score', score);
+  248 |         }
+  249 |     }, [score, highScore]);                              react-hooks/set-state-in-effect
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\hooks\useTypingEngine.js
+    8:12  error  'typedChars' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          no-unused-vars
+    9:12  error  'correctChars' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        no-unused-vars
+   12:12  error  'mistakesMap' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         no-unused-vars
+  171:12  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+  169 |     }, []);
+  170 |
+> 171 |     return {
+      |            ^
+> 172 |         isRunning,
+      | ^^^^^^^^^^^^^^^^^^
+> 173 |         isPaused,
+      …
+> 184 |         reset,
+      | ^^^^^^^^^^^^^^^^^^
+> 185 |         setIsPaused
+      | ^^^^^^^^^^^^^^^^^^
+> 186 |     };
+      | ^^^^^^ Cannot access ref value during render
+  187 | };
+  188 |  react-hooks/refs
+  176:21  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+  174 |         timeLeft,
+  175 |         currentIndex,
+> 176 |         typedChars: typedCharsRef.current,
+      |                     ^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  177 |         correctChars: correctCharsRef.current,
+  178 |         mistakes,
+  179 |         accuracyMap,                                               react-hooks/refs
+  177:23  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+  175 |         currentIndex,
+  176 |         typedChars: typedCharsRef.current,
+> 177 |         correctChars: correctCharsRef.current,
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  178 |         mistakes,
+  179 |         accuracyMap,
+  180 |         currentWPM,                                         react-hooks/refs
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\layouts\Navbar.jsx
+  7:22  error  'id' is defined but never used  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\layouts\TacticalSwitcher.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\pages\Certificate.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\pages\Course.jsx
+  14:27  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                       no-unused-vars
+  19:13  error  'activeTab' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u           no-unused-vars
+  20:13  error  'config' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u              no-unused-vars
+  52:11  error  'handleSelectLesson' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\pages\Games.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\pages\Practice.jsx
+    1:38  error    'useMemo' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           no-unused-vars
+    2:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            no-unused-vars
+   59:13  error    'isMobile' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 no-unused-vars
+  118:13  error    Error: Cannot access variable before it is declared
+
+`reset` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+  116 |         if (mode === 'active_zen') {
+  117 |             setGeneratedText(generateZenText());
+> 118 |             reset();
+      |             ^^^^^ `reset` accessed before it is declared
+  119 |         }
+  120 |     }, [zenModeId]);
+  121 |
+
+  155 |         results,
+  156 |         handleKey,
+> 157 |         reset
+      |         ^^^^^ `reset` is declared here
+  158 |     } = useTypingEngine(generatedText, mode === 'active_zen' ? 3600 : 60, null);
+  159 |
+  160 |     const currentWPM = Math.round((correctChars / 5) / (((mode === 'active_zen' ? 3600 : 60) - timeLeft) / 60) || 0);  react-hooks/immutability
+  120:8   warning  React Hook useEffect has missing dependencies: 'generateZenText', 'mode', and 'reset'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/exhaustive-deps
+  152:9   error    'typedChars' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\pages\Stats.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\rehma\Desktop\typing-master\react-app\src\pages\Test.jsx
+   10:10   error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  no-unused-vars
+   23:19   error  'type' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      no-unused-vars
+  158:101  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  156 |                     <div className="flex items-center">
+  157 |                         <Metric cluster compact label="WPM" value={currentWPM} accent="text-text-primary" />
+> 158 |                         <div className="pr-2 pt-2"><Sparkline values={[...Array(10)].map(() => 40 + Math.random() * 20)} /></div>
+      |                                                                                                     ^^^^^^^^^^^^^ Cannot call impure function
+  159 |                     </div>
+  160 |                     <div className="w-[1px] h-6 bg-border self-center mx-1" />
+  161 |                     <Metric cluster compact label="ACC" value={typedChars ? Math.round((correctChars / typedChars) * 100) : 100} unit="%" accent="text-green-500" />  react-hooks/purity
+
+✖ 74 problems (69 errors, 5 warnings)
+

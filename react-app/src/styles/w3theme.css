@@ -1,0 +1,86 @@
+:root {
+    /* W3Schools Inspired Design Tokens */
+    --primary: #04AA6D;
+    --primary-hover: #059862;
+    --bg-main: #ffffff;
+    --bg-sidebar: #f1f1f1;
+    --border: #e0e0e0;
+    --text-main: #111111;
+    --text-muted: #555555;
+    --text-on-primary: #ffffff;
+    --radius: 6px;
+
+    /* Typography */
+    --font-ui: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    --font-typing: Verdana, sans-serif;
+    --font-header: Arial, sans-serif;
+
+    /* Spacing */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 32px;
+}
+
+/* Global Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: initial;
+}
+
+/* W3Schools Style Cards */
+.w3-card {
+    border: 1px solid var(--border);
+    background: white;
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing-md);
+}
+
+/* W3Schools Style Buttons */
+.w3-btn {
+    background-color: var(--primary);
+    color: var(--text-on-primary);
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    display: inline-block;
+}
+
+.w3-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.w3-btn-outline {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.w3-btn-outline:hover {
+    background-color: #f1f1f1;
+}
+
+/* Utility Classes */
+.w3-text-green {
+    color: var(--primary);
+}
+
+.w3-bg-light {
+    background-color: #f1f1f1;
+}
+
+.w3-border-bottom {
+    border-bottom: 1px solid var(--border);
+}

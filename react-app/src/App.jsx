@@ -5,18 +5,17 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { PlatformProvider } from './context/PlatformContext';
 import { HelmetProvider } from 'react-helmet-async';
 import React, { Suspense, lazy } from 'react';
-import Navbar from './components/Layout/Navbar';
-import HomeView from './components/Views/HomeView';
-import CourseView from './components/Views/CourseView';
-import PracticeView from './components/Views/PracticeView';
-import TestView from './components/Views/TestView';
-import VerifyCertificate from './components/Views/VerifyCertificate';
-import Dashboard from './components/Dashboard/Dashboard';
+import Navbar from './layouts/Navbar';
 
-// Lazy Load Heavy Views
-const StatsView = lazy(() => import('./components/Views/StatsView'));
-const GamesView = lazy(() => import('./components/Views/GamesView'));
-const AdminHQ = lazy(() => import('./components/Admin/AdminHQ'));
+// Lazy Load Pages
+const Home = lazy(() => import('./pages/Home'));
+const Course = lazy(() => import('./pages/Course'));
+const Practice = lazy(() => import('./pages/Practice'));
+const Test = lazy(() => import('./pages/Test'));
+const Stats = lazy(() => import('./pages/Stats'));
+const Games = lazy(() => import('./pages/Games'));
+const Certificate = lazy(() => import('./pages/Certificate'));
+const AdminHQ = lazy(() => import('./features/admin/AdminHQ'));
 
 const LoadingScreen = () => (
   <div className="h-full w-full flex flex-col items-center justify-center space-y-4 min-h-[60vh]">
@@ -27,16 +26,24 @@ const LoadingScreen = () => (
 
 const AppContent = () => {
   const { activeTab } = useTabs();
-  const { currentTheme } = useTheme();
+  useTheme();
   const { loading: authLoading } = useAuth();
   const { loading: progressLoading } = useProgress();
+  const [visitedTabs, setVisitedTabs] = React.useState(() => new Set(['home']));
+
+  React.useEffect(() => {
+    setVisitedTabs(prev => {
+      if (prev.has(activeTab)) return prev;
+      return new Set(prev).add(activeTab);
+    });
+  }, [activeTab]);
 
   // Handle Certificate Verification Route
   const params = new URLSearchParams(window.location.search);
   const verifyId = params.get('verify');
 
   if (verifyId) {
-    return <VerifyCertificate certId={verifyId} />;
+    return <Certificate certId={verifyId} />;
   }
 
   if (authLoading || progressLoading) {
@@ -52,16 +59,42 @@ const AppContent = () => {
     <HelmetProvider>
       <div className="min-h-screen text-text-primary font-sans selection:bg-accent/20 selection:text-accent transition-colors duration-500">
         <Navbar />
-        <main className="container mx-auto px-4 py-8">
-          <Suspense fallback={<LoadingScreen />}>
-            {activeTab === 'home' && <Dashboard />}
-            {activeTab === 'course' && <CourseView />}
-            {activeTab === 'practice' && <PracticeView />}
-            {activeTab === 'test' && <TestView />}
-            {activeTab === 'games' && <GamesView />}
-            {activeTab === 'stats' && <StatsView />}
-            {activeTab === 'admin' && <AdminHQ />}
-          </Suspense>
+        <main className="container mx-auto px-4 pt-8 pb-24 md:pb-8">
+          <div style={{ display: activeTab === 'home' ? 'block' : 'none' }}>
+            {visitedTabs.has('home') && (
+              <Suspense fallback={<LoadingScreen />}><Home /></Suspense>
+            )}
+          </div>
+          <div style={{ display: activeTab === 'course' ? 'block' : 'none' }}>
+            {visitedTabs.has('course') && (
+              <Suspense fallback={<LoadingScreen />}><Course /></Suspense>
+            )}
+          </div>
+          <div style={{ display: activeTab === 'practice' ? 'block' : 'none' }}>
+            {visitedTabs.has('practice') && (
+              <Suspense fallback={<LoadingScreen />}><Practice isVisible={activeTab === 'practice'} /></Suspense>
+            )}
+          </div>
+          <div style={{ display: activeTab === 'test' ? 'block' : 'none' }}>
+            {visitedTabs.has('test') && (
+              <Suspense fallback={<LoadingScreen />}><Test isVisible={activeTab === 'test'} /></Suspense>
+            )}
+          </div>
+          <div style={{ display: activeTab === 'games' ? 'block' : 'none' }}>
+            {visitedTabs.has('games') && (
+              <Suspense fallback={<LoadingScreen />}><Games isVisible={activeTab === 'games'} /></Suspense>
+            )}
+          </div>
+          <div style={{ display: activeTab === 'stats' ? 'block' : 'none' }}>
+            {visitedTabs.has('stats') && (
+              <Suspense fallback={<LoadingScreen />}><Stats /></Suspense>
+            )}
+          </div>
+          <div style={{ display: activeTab === 'admin' ? 'block' : 'none' }}>
+            {visitedTabs.has('admin') && (
+              <Suspense fallback={<LoadingScreen />}><AdminHQ /></Suspense>
+            )}
+          </div>
         </main>
       </div>
     </HelmetProvider>

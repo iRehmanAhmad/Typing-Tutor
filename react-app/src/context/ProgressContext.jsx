@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
-import { db } from '../config/firebase';
+import { db } from '../lib/firebase';
 import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 
 const ProgressContext = createContext();
@@ -21,17 +21,21 @@ export const ProgressProvider = ({ children }) => {
 
     useEffect(() => {
         if (!user) {
-            setProgress({
-                xp: 0,
-                streak: 0,
-                completedSubLessons: [],
-                unlockedAchievements: [],
-                weakKeys: {},
-                lastUpdated: null
-            });
-            setLoading(false);
+            // Only reset if not already reset to avoid redundant updates/renders
+            if (loading || progress.xp !== 0) {
+                setProgress({
+                    xp: 0,
+                    streak: 0,
+                    completedSubLessons: [],
+                    unlockedAchievements: [],
+                    weakKeys: {},
+                    lastUpdated: null
+                });
+                setLoading(false);
+            }
             return;
         }
+
 
         const userDocRef = doc(db, 'users', user.uid);
 
