@@ -6,6 +6,7 @@ import { PlatformProvider } from './context/PlatformContext';
 import { HelmetProvider } from 'react-helmet-async';
 import React, { Suspense, lazy } from 'react';
 import Navbar from './layouts/Navbar';
+import { PageSkeleton } from './components/Skeleton';
 
 // Lazy Load Pages
 const Home = lazy(() => import('./pages/Home'));
@@ -46,11 +47,13 @@ const AppContent = () => {
     return <Certificate certId={verifyId} />;
   }
 
-  if (authLoading || progressLoading) {
+if (authLoading || progressLoading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center space-y-4">
-        <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-black text-text-muted uppercase tracking-[0.3em] animate-pulse">Loading Typing Master...</p>
+      <div className="min-h-screen flex flex-col">
+        <div className="h-16 bg-bg-secondary border-b border-border" />
+        <div className="flex-1 pt-8">
+          <PageSkeleton />
+        </div>
       </div>
     );
   }
@@ -62,37 +65,37 @@ const AppContent = () => {
         <main className="container mx-auto px-4 pt-8 pb-24 md:pb-8">
           <div style={{ display: activeTab === 'home' ? 'block' : 'none' }}>
             {visitedTabs.has('home') && (
-              <Suspense fallback={<LoadingScreen />}><Home /></Suspense>
+              <Suspense fallback={<PageSkeleton />}><Home /></Suspense>
             )}
           </div>
           <div style={{ display: activeTab === 'course' ? 'block' : 'none' }}>
             {visitedTabs.has('course') && (
-              <Suspense fallback={<LoadingScreen />}><Course /></Suspense>
+              <Suspense fallback={<PageSkeleton />}><Course /></Suspense>
             )}
           </div>
           <div style={{ display: activeTab === 'practice' ? 'block' : 'none' }}>
             {visitedTabs.has('practice') && (
-              <Suspense fallback={<LoadingScreen />}><Practice isVisible={activeTab === 'practice'} /></Suspense>
+              <Suspense fallback={<PageSkeleton />}><Practice isVisible={activeTab === 'practice'} /></Suspense>
             )}
           </div>
           <div style={{ display: activeTab === 'test' ? 'block' : 'none' }}>
             {visitedTabs.has('test') && (
-              <Suspense fallback={<LoadingScreen />}><Test isVisible={activeTab === 'test'} /></Suspense>
+              <Suspense fallback={<PageSkeleton />}><Test isVisible={activeTab === 'test'} /></Suspense>
             )}
           </div>
           <div style={{ display: activeTab === 'games' ? 'block' : 'none' }}>
             {visitedTabs.has('games') && (
-              <Suspense fallback={<LoadingScreen />}><Games isVisible={activeTab === 'games'} /></Suspense>
+              <Suspense fallback={<PageSkeleton />}><Games isVisible={activeTab === 'games'} /></Suspense>
             )}
           </div>
           <div style={{ display: activeTab === 'stats' ? 'block' : 'none' }}>
             {visitedTabs.has('stats') && (
-              <Suspense fallback={<LoadingScreen />}><Stats /></Suspense>
+              <Suspense fallback={<PageSkeleton />}><Stats /></Suspense>
             )}
           </div>
           <div style={{ display: activeTab === 'admin' ? 'block' : 'none' }}>
             {visitedTabs.has('admin') && (
-              <Suspense fallback={<LoadingScreen />}><AdminHQ /></Suspense>
+              <Suspense fallback={<PageSkeleton />}><AdminHQ /></Suspense>
             )}
           </div>
         </main>

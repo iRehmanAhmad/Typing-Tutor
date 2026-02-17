@@ -87,17 +87,74 @@
 }
 
 .theme-w3-classic {
-  --font-primary: var(--font-body);
+  --font-primary: "Verdana", sans-serif;
+  --font-heading: "Segoe UI", Arial, sans-serif;
   --bg-primary: #FFFFFF;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
+  --bg-secondary: #E7E9EB;
+  /* W3Schools Sidebar Grey */
+  --bg-tertiary: #f1f1f1;
+  /* Input/Code block grey */
   --accent: #04AA6D;
+  /* Official W3Schools Green */
   --accent-rgb: 4, 170, 109;
   --accent-secondary: #059862;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --border: rgba(15, 23, 42, 0.08);
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  --border: #cccccc;
+}
+
+/* W3Schools Theme Global Overrides */
+.theme-w3-classic * {
+  border-radius: 4px !important;
+  /* Minimal rounding */
+  box-shadow: none !important;
+  /* Flat design */
+}
+
+/* Preserve circular elements like avatars and status dots */
+.theme-w3-classic .rounded-full {
+  border-radius: 50% !important;
+}
+
+/* Add borders to floating elements since shadows are removed */
+.theme-w3-classic .fixed,
+.theme-w3-classic .absolute.z-50,
+.theme-w3-classic .absolute.z-\[70\] {
+  border: 1px solid #ccc !important;
+}
+
+/* Allow minimal shadow for modals/popovers if absolutely needed */
+.theme-w3-classic .sticky {
+  border-bottom: 1px solid #ccc;
+}
+
+.theme-w3-classic button,
+.theme-w3-classic input,
+.theme-w3-classic textarea,
+.theme-w3-classic select {
+  font-family: "Verdana", sans-serif;
+}
+
+/* W3Schools Styled Inputs */
+.theme-w3-classic input:not([type="checkbox"]):not([type="radio"]),
+.theme-w3-classic textarea,
+.theme-w3-classic select {
+  background-color: #f1f1f1;
+  border: 1px solid transparent;
+}
+
+.theme-w3-classic input:focus,
+.theme-w3-classic textarea:focus,
+.theme-w3-classic select:focus {
+  background-color: #fff;
+  border-bottom: 2px solid #04AA6D !important;
+  outline: none;
+}
+
+.theme-w3-classic ::selection {
+  background-color: #04AA6D;
+  color: #ffffff;
 }
 
 body {

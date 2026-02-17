@@ -122,19 +122,12 @@ const CourseView = () => {
                         className="relative z-10 flex flex-col xl:flex-row gap-6 h-full"
                     >
                         {/* Left Column: Sidebar (Fixed Width) */}
-                        <div className="w-full xl:w-[260px] 2xl:w-[280px] flex-shrink-0 flex flex-col gap-4">
-                            <button
-                                onClick={handleBackToCatalog}
-                                className="px-4 py-3 rounded-xl bg-bg-secondary border border-border text-xs font-black uppercase tracking-widest hover:bg-bg-tertiary transition-all flex items-center gap-3 group relative overflow-hidden shadow-lg"
-                            >
-                                <div className="absolute inset-0 bg-accent/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
-                                <span className="group-hover:-translate-x-1 transition-transform">←</span>
-                                Back to Courses
-                            </button>
+                        <div className="w-full xl:w-[260px] 2xl:w-[280px] flex-shrink-0 h-full">
                             <CourseSidebar
                                 course={selectedCourse}
                                 onSelectSubLesson={handleSelectSubLesson}
                                 activeSubLessonId={activeSubLesson?.id}
+                                onBack={handleBackToCatalog}
                             />
                         </div>
 

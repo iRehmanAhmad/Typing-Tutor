@@ -14,7 +14,7 @@ export const themes = [
 
 export const ThemeProvider = ({ children }) => {
     const [currentTheme, setCurrentTheme] = useState(() => {
-        return localStorage.getItem('tactical-theme') || 'indigo-flux';
+        return localStorage.getItem('tactical-theme') || 'w3-classic';
     });
 
     useEffect(() => {

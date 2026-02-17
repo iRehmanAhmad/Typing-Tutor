@@ -1,10 +1,47 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, isFocusMode, currentWPM = 0, isCompact = false, isActive = true }) => {
+const TypingArena = forwardRef(({ text, currentIndex, accuracyMap, handleKey, isRunning, isFocusMode, currentWPM = 0, isCompact = false, isActive = true }, ref) => {
     const containerRef = useRef(null);
+    const inputRef = useRef(null);
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // Heat Color Logic: Blue -> Green -> Gold
+    useImperativeHandle(ref, () => containerRef.current, []);
+
+    const focusInput = () => {
+        if (isMobile && inputRef.current) {
+            inputRef.current.focus();
+        } else if (containerRef.current) {
+            containerRef.current.focus();
+        }
+    };
+
+    const handleContainerClick = () => {
+        focusInput();
+    };
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        if (value.length > 0) {
+            handleKey(value.slice(-1));
+        }
+        e.target.value = '';
+    };
+
+    useEffect(() => {
+        if (!isActive) return;
+
+        const handleKeyDown = (e) => {
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            if (isMobile) return;
+            handleKey(e.key);
+            if (e.key === ' ' || e.key === 'Backspace') e.preventDefault();
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [handleKey, isActive, isMobile]);
+
     const getHeatColor = () => {
         if (!isRunning) return 'border-border';
         if (currentWPM > 80) return 'border-accent shadow-[0_0_50px_rgba(var(--accent-rgb),0.2)]';
@@ -18,19 +55,6 @@ const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, is
         if (currentWPM > 40) return 'text-green-500';
         return 'text-blue-500';
     };
-
-    useEffect(() => {
-        if (!isActive) return;
-
-        const handleKeyDown = (e) => {
-            if (e.ctrlKey || e.metaKey || e.altKey) return;
-            handleKey(e.key);
-            if (e.key === ' ' || e.key === 'Backspace') e.preventDefault();
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [handleKey, isActive]);
 
     const words = React.useMemo(() => {
         const result = [];
@@ -47,16 +71,39 @@ const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, is
     }, [text]);
 
     return (
-        <div
-            ref={containerRef}
-            className={`
-                bg-bg-secondary backdrop-blur-xl border rounded-3xl relative font-mono select-none transition-all duration-700
-                overflow-hidden flex flex-col
-                ${isCompact ? 'p-4 text-xl md:text-2xl leading-relaxed' : 'p-6 md:p-10 text-3xl leading-relaxed'}
-                ${getHeatColor()}
-            `}
-            style={{ maxHeight: isCompact ? '280px' : '600px' }}
-        >
+        <>
+            {isMobile && (
+                <input
+                    ref={inputRef}
+                    type="text"
+                    className="opacity-0 absolute pointer-events-none"
+                    onChange={handleInputChange}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Backspace') {
+                            handleKey('Backspace');
+                        }
+                        e.preventDefault();
+                    }}
+                    inputMode="text"
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    autoCorrect="off"
+                    spellCheck={false}
+                />
+            )}
+            <div
+                ref={containerRef}
+                tabIndex={0}
+                onClick={handleContainerClick}
+                aria-label="Typing area. Press keys to type."
+                className={`
+                    bg-bg-secondary backdrop-blur-xl border rounded-3xl relative font-mono select-none transition-all duration-700 outline-none focus:ring-2 focus:ring-accent/50
+                    overflow-hidden flex flex-col
+                    ${isCompact ? 'p-4 text-xl md:text-2xl leading-relaxed' : 'p-6 md:p-10 text-3xl leading-relaxed'}
+                    ${getHeatColor()}
+                `}
+                style={{ maxHeight: isCompact ? '280px' : '600px' }}
+            >
             {/* Heat Status Indicator */}
             <AnimatePresence>
                 {isRunning && (
@@ -136,7 +183,8 @@ const TypingArena = ({ text, currentIndex, accuracyMap, handleKey, isRunning, is
                 ))}
             </div>
         </div>
+        </>
     );
-};
+});
 
 export default TypingArena;

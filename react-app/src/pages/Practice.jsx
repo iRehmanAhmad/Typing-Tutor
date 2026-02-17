@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TypingArena from '../features/arena/TypingArena';
 import { useTypingEngine } from '../hooks/useTypingEngine';
 import { useProgress } from '../context/ProgressContext';
-// import { usePlatform } from '../context/PlatformContext';
+import { usePlatform } from '../context/PlatformContext';
 import SEO from '../layouts/SEO';
 import ResultModal from '../features/arena/ResultModal';
 
@@ -56,10 +56,11 @@ const AdUnit = ({ className = "" }) => (
 
 const PracticeView = ({ isVisible = true }) => {
     const { progress } = useProgress();
-    // const { isMobile } = usePlatform();
-    const [mode, setMode] = useState('dashboard'); // 'dashboard', 'precision', 'custom', 'zen'
+    const { isMobile } = usePlatform();
+    const [mode, setMode] = useState('dashboard');
     const [customText, setCustomText] = useState('');
     const [generatedText, setGeneratedText] = useState('');
+    const arenaRef = useRef(null);
 
     const {
         isRunning,
@@ -131,7 +132,7 @@ const PracticeView = ({ isVisible = true }) => {
         }
     }, [zenModeId]);
 
-    const handleStartValues = (selectedMode) => {
+const handleStartValues = (selectedMode) => {
         if (selectedMode === 'precision') {
             setGeneratedText(generateWeakKeyText());
             setMode('active_precision');
@@ -153,6 +154,15 @@ const PracticeView = ({ isVisible = true }) => {
         setMode('dashboard');
         reset();
     };
+
+    useEffect(() => {
+        if (mode.startsWith('active') && !isMobile && arenaRef.current) {
+            const timer = setTimeout(() => {
+                arenaRef.current?.focus();
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [mode, isMobile]);
 
     // --- Engine ---
 
@@ -311,7 +321,8 @@ const PracticeView = ({ isVisible = true }) => {
                             </div>
                         </div>
 
-                        <TypingArena
+<TypingArena
+                            ref={arenaRef}
                             text={generatedText}
                             currentIndex={currentIndex}
                             accuracyMap={accuracyMap}
